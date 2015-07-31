@@ -1,13 +1,11 @@
 package com.shz.foundation.media;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.shz.foundation.persistence.UUIDBaseModel;
 
 @Entity
-@Table(name="fhzj_medias")
 public class MediaContent extends UUIDBaseModel {
 
 	private String remark;

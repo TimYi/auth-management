@@ -10,9 +10,17 @@
 	</parent>	
 	<artifactId>shanghuozu-project-domain</artifactId>
 	<name>ShangHuoZu :: Project :: Domain</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	
 	<dependencies>
+	
+		<!-- project begin -->
+		<dependency>
+			<groupId>com.shanghuozu</groupId>
+			<artifactId>shanghuozu-foundation-core</artifactId>
+		</dependency>
+		<!-- project end -->
+		
 		<!-- persist begin -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

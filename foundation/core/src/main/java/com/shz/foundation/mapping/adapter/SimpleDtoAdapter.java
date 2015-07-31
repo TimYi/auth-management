@@ -15,7 +15,7 @@ public abstract class SimpleDtoAdapter<D,T, I> implements DtoAdapter<D, T, I> {
 		if(ds==null)return null;
 		List<T> ts=new ArrayList<T>();
 		for (D d : ds) {
-			T t=convertToDetailedDto(d);
+			T t=convert(d);
 			ts.add(t);
 		}
 		return ts;

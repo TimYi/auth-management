@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import com.shz.foundation.persistence.UUIDBaseModel;
 
 @Entity
-@Table(name = "fhzj_category",
+@Table(
 	indexes=@Index(name="type_index",columnList="type")
 )
 public class Category extends UUIDBaseModel {
