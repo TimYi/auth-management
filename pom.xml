@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.shanghuozu</groupId>
-	<artifactId>shanghuozu-founcation</artifactId>
+	<artifactId>shanghuozu-parent</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
-	<name>ShangHuoZu :: Foundation</name>
+	<name>ShangHuoZu :: Parent</name>
 	<packaging>pom</packaging>
 
 	<description>ShangHuoZu is a project belong to doublev2v company </description>
@@ -15,12 +15,13 @@
 	</organization>
 
 	<modules>
-		<module>core</module>
+		<module>foundation</module>
+		<module>project</module>
   	</modules>
 	
 	<properties>
 		<!-- 主要依赖库的版本定义 -->
-		<fenghuangzhujia.version>0.1.0-SNAPSHOT</fenghuangzhujia.version>
+		<shanghuozu.version>0.1.0-SNAPSHOT</shanghuozu.version>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<hibernate.version>4.3.9.Final</hibernate.version>
 		<spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
@@ -85,38 +86,26 @@
 	<!-- 预定义依赖项的version,scope与exclusions,子项目中只需定义groupId 与  artifactId 即可 -->
 	<dependencyManagement>
 		<dependencies>
-			<!-- fenghuangzhujia MODULES begin -->
+			<!-- shanghuozu MODULES begin -->
 			<dependency>
-				<groupId>com.fenghuangzhujia</groupId>
-				<artifactId>douvlev2v-foundation</artifactId>
-				<version>${fenghuangzhujia.version}</version>
+				<groupId>com.shanghuozu</groupId>
+				<artifactId>shanghuozu-foundation</artifactId>
+				<version>${shanghuozu.version}</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
-				<groupId>com.fenghuangzhujia</groupId>
-				<artifactId>fenghuangzhujia-foundation-utils</artifactId>
-				<version>${fenghuangzhujia.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.fenghuangzhujia</groupId>
-				<artifactId>fenghuangzhujia-foundation-core</artifactId>
-				<version>${fenghuangzhujia.version}</version>
+				<groupId>com.shanghuozu</groupId>
+				<artifactId>shanghuozu-foundation-core</artifactId>
+				<version>${shanghuozu.version}</version>
 				<scope>compile</scope>
 			</dependency>	
 			<dependency>
-				<groupId>com.fenghuangzhujia</groupId>
-				<artifactId>fenghuangzhujia-eshop-core</artifactId>
-				<version>${fenghuangzhujia.version}</version>
+				<groupId>com.shanghuozu</groupId>
+				<artifactId>shanghuozu-project-domain</artifactId>
+				<version>${shanghuozu.version}</version>
 				<scope>compile</scope>
 			</dependency>	
-			<dependency>
-				<groupId>com.fenghuangzhujia</groupId>
-				<artifactId>fenghuangzhujia-eshop-domain</artifactId>
-				<version>${fenghuangzhujia.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<!-- fenghuangzhujia MODULES end -->
+			<!-- shanghuozu MODULES end -->
 			
 			<!-- spring-->
 			<!-- 纯粹为了exclude commons-loging -->
@@ -533,11 +522,11 @@
 				<scope>test</scope>
 			</dependency>
 
-			<!-- fenghuangzhujia -->
+			<!-- shanghuozu -->
 			<dependency>
-				<groupId>com.fenghuangzhujia</groupId>
-				<artifactId>fenghuangzhujia-core</artifactId>
-				<version>${fenghuangzhujia.version}</version>
+				<groupId>com.shanghuozu</groupId>
+				<artifactId>shanghuozu-core</artifactId>
+				<version>${shanghuozu.version}</version>
 				<classifier>tests</classifier>
 				<scope>test</scope>
 			</dependency>
