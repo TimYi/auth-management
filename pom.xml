@@ -17,6 +17,7 @@
 	<modules>
 		<module>foundation</module>
 		<module>project</module>
+		<module>pay</module>
   	</modules>
 	
 	<properties>
@@ -60,6 +61,14 @@
 	      <id>my</id>
 	      <url>file://${project.basedir}/repo</url>
 	    </repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>bintray</name>
+			<url>http://jcenter.bintray.com</url>
+		</repository>
     </repositories>
 
 	<!-- 设定除中央仓库 (repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查询，如有Nexus私服, 取消注释并指向正确的服务器地址 
@@ -102,6 +111,12 @@
 			<dependency>
 				<groupId>com.shanghuozu</groupId>
 				<artifactId>shanghuozu-project-domain</artifactId>
+				<version>${shanghuozu.version}</version>
+				<scope>compile</scope>
+			</dependency>	
+			<dependency>
+				<groupId>com.shanghuozu</groupId>
+				<artifactId>shanghuozu-pay-core</artifactId>
 				<version>${shanghuozu.version}</version>
 				<scope>compile</scope>
 			</dependency>	

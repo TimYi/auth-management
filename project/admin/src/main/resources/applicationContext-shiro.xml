@@ -12,7 +12,7 @@
 	</bean>
 
 	<!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
-	<bean id="shiroDbRealm" class="com.shz.project.admin.ShowcaseRealm">
+	<bean id="shiroDbRealm" class="com.shz.project.admin.authenticate.SystemUserRealm">
 	</bean>
 	
 	<!-- Shiro Filter -->
@@ -20,6 +20,7 @@
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/" />
+		<!-- 
 		<property name="filterChainDefinitions">
 			<value>
 				/login = authc
@@ -28,8 +29,10 @@
 				/api/** = anon
 				/register/** = anon
 				/admin/** = roles[admin]
+				/** = user
 			</value>			
 		</property>
+		-->
 	</bean>
 	
 	<!-- 用户授权信息Cache, 采用EhCache --> 

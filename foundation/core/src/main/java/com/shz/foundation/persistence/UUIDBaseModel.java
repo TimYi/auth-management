@@ -27,4 +27,21 @@ public abstract class UUIDBaseModel extends BaseModel implements Identified<Stri
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	/**
+	 * 由于是uuid，所以id相同认为是相等
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof UUIDBaseModel))return false;
+		return ((UUIDBaseModel)obj).getId().equals(id);
+	}
+	
+	/**
+	 * 相应的修改hashCode方法
+	 */
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	};
 }

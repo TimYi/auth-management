@@ -70,6 +70,11 @@
 			<artifactId>spring-web</artifactId>
 			<optional>true</optional>
 		</dependency>	
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<optional>true</optional>
+		</dependency>	
 		<!-- spring end -->
 		
 		<!-- spring security begin -->
@@ -143,6 +148,14 @@
 			<optional>true</optional>
 		</dependency>
 		<!-- bean mapping end -->
+		
+		<!-- apache shiro begin -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- apache shiro end -->
 		
 		<!-- local dependency begin -->
 		<!-- captcha -->
