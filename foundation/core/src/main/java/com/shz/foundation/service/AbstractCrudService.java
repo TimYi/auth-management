@@ -1,6 +1,8 @@
 package com.shz.foundation.service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -37,14 +39,25 @@ public abstract class AbstractCrudService<T,ID extends Serializable> implements 
 	}
 
 	@Override
-	public Iterable<T> findAll() {
-		return getRepository().findAll();
+	public List<T> findAll() {
+		Iterable<T> result=getRepository().findAll();
+		if(result==null) return null;
+	    List<T> list=new ArrayList<>();
+	    for (T t : result) {
+			list.add(t);
+		}
+	    return list;
 	}
 
 	@Override
-	public Iterable<T> findAll(Iterable<ID> ids) {
+	public List<T> findAll(Iterable<ID> ids) {
 		if(ids==null)return null;
-		return getRepository().findAll(ids);
+		Iterable<T> result=getRepository().findAll(ids);
+		List<T> list=new ArrayList<>();
+	    for (T t : result) {
+			list.add(t);
+		}
+	    return list;
 	}
 
 	@Override

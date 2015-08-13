@@ -16,6 +16,15 @@
     	.pdl-3 {padding-left:3em;}
     	.pdl-4 {padding-left:4em;}
     	.mgt-1 {margin-top:1em;}
+    	
+		.table>tbody>tr>td.pdl-1 {padding-left:1em;	}
+		.table>tbody>tr>td.pdl-2 {padding-left:2em;	}
+		.table>tbody>tr>td.pdl-3 {padding-left:3em;	}
+		.table>tbody>tr>td.pdl-4 {padding-left:4em;	}
+		.table>thead>tr>th.pdl-1 {padding-left:1em;	}
+		.table>thead>tr>th.pdl-2 {padding-left:2em;	}
+		.table>thead>tr>th.pdl-3 {padding-left:3em;	}
+		.table>thead>tr>th.pdl-4 {padding-left:4em;	}
     </style>
     <jsp:invoke fragment="style"></jsp:invoke>
 </head>
@@ -32,15 +41,41 @@
 				</div>          
             </div>
             <div id="body" class="col-sm-10">
-            
-              
+
+            	<jsp:doBody/>
+            </div>            
+        </div>  
+    </div>
+
+    
+    <script src="<c:url value='/resources/js/jquery-1.11.3.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/jquery.form.js'/>"></script>
+    <script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/bootstrap-treeview.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/bootbox.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/art-template.js'/>"></script>
+    <script charset="utf-8" src="<c:url value='/resources/js/kindeditor.js'/>"></script>
+    <script charset="utf-8" src="<c:url value='/resources/js/autoheight.js'/>"></script>
+    <script charset="utf-8" src="<c:url value='/resources/js/lang/zh_CN.js'/>"></script>
+	<script src="<c:url value='/resources/js/bootstrap-datepicker.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/jquery.twbsPagination.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/dynamicTabs.js'/>"></script>
+    <script src="<c:url value='/resources/js/admin.js'/>"></script>
+    <jsp:invoke fragment="script"></jsp:invoke>
+</body>
+</html>
+
+<!--              
 <ul id="myTab" class="nav nav-tabs">
    <li class="active">
       <a href="#home" data-toggle="tab">
          W3Cschool Home
       </a>
    </li>
-   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+   <li>
+   <a href="#ios" data-toggle="tab">iOS</a>
+   <img src="<c:url value='/resources/image/close.png'/>" onclick="dynamicTab.close()" style="position:absolute;top:0;right:0;height:18px;width:18px;cursor:pointer"/>
+   </li>
    <li class="dropdown">
       <a href="#" id="myTabDrop1" class="dropdown-toggle" 
          data-toggle="dropdown">Java 
@@ -67,27 +102,5 @@
       <p>Enterprise Java Beans（EJB）是一个创建高度可扩展性和强大企业级应用程序的开发架构，部署在兼容应用程序服务器（比如 JBOSS、Web Logic 等）的 J2EE 上。
       </p>
    </div>
-</div>        
-
-  	
-            	<jsp:doBody/>
-            </div>            
-        </div>  
-    </div>
-
-    
-    <script src="<c:url value='/resources/js/jquery-1.11.3.min.js'/>"></script>
-    <script src="<c:url value='/resources/js/jquery.form.js'/>"></script>
-    <script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
-    <script src="<c:url value='/resources/js/bootstrap-treeview.min.js'/>"></script>
-    <script src="<c:url value='/resources/js/bootbox.min.js'/>"></script>
-    <script src="<c:url value='/resources/js/art-template.js'/>"></script>
-    <script charset="utf-8" src="<c:url value='/resources/js/kindeditor.js'/>"></script>
-    <script charset="utf-8" src="<c:url value='/resources/js/autoheight.js'/>"></script>
-    <script charset="utf-8" src="<c:url value='/resources/js/lang/zh_CN.js'/>"></script>
-	<script src="<c:url value='/resources/js/bootstrap-datepicker.min.js'/>"></script>
-    <script src="<c:url value='/resources/js/jquery.twbsPagination.min.js'/>"></script>
-    <script src="<c:url value='/resources/js/admin.js'/>"></script>
-    <jsp:invoke fragment="script"></jsp:invoke>
-</body>
-</html>
+</div>      
+ -->   

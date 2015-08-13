@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jdbc="http://www.springframework.org/schema/jdbc"  
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd"
+	default-lazy-init="true">
+
+	<description>Spring公共配置 </description>
+	
+	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.shz">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+	
+	<!-- 读取属性文件 -->
+	<context:property-placeholder location="classpath:app.properties,classpath*:authorities.properties" file-encoding="utf-8"/>
+	
+	<!-- Jpa Entity Manager 配置 -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> 
+		<property name="dataSource" ref="dataSource"/>
+		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
+		<property name="packagesToScan" value="com.shz,org.springframework.data.jpa.convert.threeten"/>
+		<property name="jpaProperties">
+			<props>
+				<!-- 命名规则 My_NAME->MyName -->
+				<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="databasePlatform" value="${hibernate.dialect}"/>
+		<property name="generateDdl" value="${hibernate.generateDdl}"/>		
+	</bean>
+
+	<!-- Spring Data Jpa配置 -->
+ 	<jpa:repositories base-package="com.shz"  transaction-manager-ref="transactionManager" entity-manager-factory-ref="entityManagerFactory"/>
+   
+	<!-- Jpa 事务配置 -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	
+	<!-- dataSource 配置 -->
+    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+		<!-- Connection Info -->
+			<property name="driverClassName" value="${jdbc.driver}" />
+			<property name="url" value="${jdbc.url}" />
+			<property name="username" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+			<!-- 解决中文乱码问题 -->
+			<property name="dbProperties">
+			   <props>
+			      <prop key="useUnicode">yes</prop>
+			      <prop key="characterEncoding">utf8</prop>
+			   </props>
+			</property>
+			
+			<!-- Connection Pooling Info -->
+			<property name="maxActive" value="${jdbc.pool.maxActive}" />
+			<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+			<property name="minIdle" value="2" />
+			<property name="maxWait" value="5000" />	
+			<property name="testOnBorrow" value="${jdbc.pool.testOnBorrow}" />
+			<property name="maxAge" value="${jdbc.pool.maxAge}" />
+			<!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+			<property name="timeBetweenEvictionRunsMillis" value="60000" />			
+			<property name="minEvictableIdleTimeMillis" value="600000" />
+			<property name="defaultAutoCommit" value="false" />
+	</bean>
+	
+	<!-- 初始化文件访问服务器 -->
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="staticMethod" value="com.shz.foundation.media.MediaServiceConfig.setServerName"/>
+	    <property name="arguments" value="${imageServer.name}"/>
+	</bean>
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="staticMethod" value="com.shz.foundation.media.MediaServiceConfig.setServerAddress"/>
+	    <property name="arguments" value="${imageServer.address}"/>
+	</bean>
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="staticMethod" value="com.shz.foundation.media.MediaServiceConfig.setBasePath"/>
+	    <property name="arguments" value="${imageServer.basePath}"/>
+	</bean>
+  	
+  	<!-- 采用localMediaService作为图片访问服务实现 -->
+  	<bean class="com.shz.foundation.media.LocalMediaService">
+  	</bean>  
+  	
+</beans>

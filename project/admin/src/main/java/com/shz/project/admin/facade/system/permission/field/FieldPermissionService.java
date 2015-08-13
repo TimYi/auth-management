@@ -3,6 +3,7 @@ package com.shz.project.admin.facade.system.permission.field;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shz.project.admin.facade.system.permission.PermissionInputArgs;
 import com.shz.project.domain.system.permission.FieldPermission;
 import com.shz.project.domain.system.permission.FieldPermissionRepository;
 import com.shz.foundation.mapping.service.DtoPagingService;
@@ -10,11 +11,11 @@ import com.shz.foundation.mapping.service.DtoPagingService;
 @Service
 @Transactional
 public class FieldPermissionService extends 
-	DtoPagingService<FieldPermission, FieldPermissionVo, FieldPermissionInputArgs, String> {
+	DtoPagingService<FieldPermission, FieldPermissionVo, PermissionInputArgs, String> {
 
 	/**需要保证添加时，fieldPermission的code没有重复值*/
 	@Override
-	public FieldPermissionVo add(FieldPermissionInputArgs entity) {
+	public FieldPermissionVo add(PermissionInputArgs entity) {
 		if(entity==null) return null;
 		
 		//保证权限代码不重复
@@ -31,7 +32,7 @@ public class FieldPermissionService extends
 	}
 	
 	@Override
-	public FieldPermissionVo update(FieldPermissionInputArgs entity) {
+	public FieldPermissionVo update(PermissionInputArgs entity) {
 		if(entity==null) return null;
 		//保证权限代码不重复
 		String code=entity.getCode();

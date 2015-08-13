@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shz.project.admin.facade.system.permission.PermissionInputArgs;
 import com.shz.project.domain.system.permission.FieldPermission;
 import com.shz.project.domain.system.permission.FieldPermissionRepository;
 import com.shz.project.domain.system.permission.OperatePermission;
@@ -14,7 +15,7 @@ import com.shz.foundation.mapping.service.DtoPagingService;
 @Service
 @Transactional
 public class OperatePermissionService extends 
-	DtoPagingService<OperatePermission, OperatePermissionVo, OperatePermissionInputArgs, String> {
+	DtoPagingService<OperatePermission, OperatePermissionVo, PermissionInputArgs, String> {
 	
 	@Autowired
 	private FieldPermissionRepository fieldPermissionRepository;
@@ -23,10 +24,10 @@ public class OperatePermissionService extends
 	 * 确保同一个field的操作code不重复，并且确保fieldId不为空
 	 */
 	@Override
-	public OperatePermissionVo add(OperatePermissionInputArgs entity) {
+	public OperatePermissionVo add(PermissionInputArgs entity) {
 		if(entity==null) return null;		
 		
-		if(StringUtils.isBlank(entity.getId())) {
+		if(StringUtils.isBlank(entity.getFieldId())) {
 			throw new IllegalArgumentException("权限域id不能为空");
 		}
 		
@@ -50,7 +51,7 @@ public class OperatePermissionService extends
 	 * @return
 	 */
 	@Override
-	public OperatePermissionVo update(OperatePermissionInputArgs entity) {
+	public OperatePermissionVo update(PermissionInputArgs entity) {
 		if(entity==null) return null;
 		String id=entity.getId();
 		OperatePermission d=getRepository().findOne(id);

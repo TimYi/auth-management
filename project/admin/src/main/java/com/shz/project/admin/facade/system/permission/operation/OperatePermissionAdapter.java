@@ -5,25 +5,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.shz.foundation.mapping.adapter.AbstractDtoAdapter;
+import com.shz.project.admin.facade.system.permission.PermissionInputArgs;
 import com.shz.project.domain.system.permission.FieldPermission;
 import com.shz.project.domain.system.permission.FieldPermissionRepository;
 import com.shz.project.domain.system.permission.OperatePermission;
 
 @Component
 public class OperatePermissionAdapter 
-	extends AbstractDtoAdapter<OperatePermission, OperatePermissionVo, OperatePermissionInputArgs> {
+	extends AbstractDtoAdapter<OperatePermission, OperatePermissionVo, PermissionInputArgs> {
 
 	@Autowired
 	private FieldPermissionRepository fieldPermissionRepository;
 	
 	@Override
-	public OperatePermission postConvertToDo(OperatePermissionInputArgs i,
+	public OperatePermission postConvertToDo(PermissionInputArgs i,
 			OperatePermission d) {
 		return postUpdate(i, d);
 	}
 
 	@Override
-	public OperatePermission postUpdate(OperatePermissionInputArgs i,
+	public OperatePermission postUpdate(PermissionInputArgs i,
 			OperatePermission d) {
 		String fieldId=i.getFieldId();
 		if(StringUtils.isNotBlank(fieldId)) {

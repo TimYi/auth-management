@@ -2,17 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <%@ taglib  prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<style>
-	.table>tbody>tr>td.pdl-1 {padding-left:1em;	}
-	.table>tbody>tr>td.pdl-2 {padding-left:2em;	}
-	.table>tbody>tr>td.pdl-3 {padding-left:3em;	}
-	.table>tbody>tr>td.pdl-4 {padding-left:4em;	}
-	.table>thead>tr>th.pdl-1 {padding-left:1em;	}
-	.table>thead>tr>th.pdl-2 {padding-left:2em;	}
-	.table>thead>tr>th.pdl-3 {padding-left:3em;	}
-	.table>thead>tr>th.pdl-4 {padding-left:4em;	}
-</style>
-
+<div id="title">菜单列表</div>
 <div class="row">
 <div class="col-sm-offset-1">
 	<button class="btn btn-primary" onclick="addPage('/menu')">添加</button>

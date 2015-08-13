@@ -17,7 +17,7 @@ public class ObjectPermission extends Permission {
 	/**对do的具体操作*/
 	private OperatePermission operation;
 
-	@ManyToOne(optional=false)
+	@ManyToOne
 	public OperatePermission getOperation() {
 		return operation;
 	}

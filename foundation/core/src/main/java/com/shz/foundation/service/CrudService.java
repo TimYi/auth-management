@@ -1,6 +1,7 @@
 package com.shz.foundation.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ public interface CrudService<T, I, ID extends Serializable> {
 	 * 
 	 * @return all entities
 	 */
-	Iterable<T> findAll();
+	List<? extends T> findAll();
 
 	/**
 	 * Returns all instances of the type with the given IDs.
@@ -66,7 +67,7 @@ public interface CrudService<T, I, ID extends Serializable> {
 	 * @param ids
 	 * @return
 	 */
-	Iterable<T> findAll(Iterable<ID> ids);
+	List<? extends T> findAll(Iterable<ID> ids);
 
 	/**
 	 * Returns the number of entities available.

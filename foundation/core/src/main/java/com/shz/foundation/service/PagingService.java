@@ -13,5 +13,5 @@ public interface PagingService<T, I, ID extends Serializable> extends CrudServic
 	 * @param size page size
 	 * @return
 	 */
-	PagedList<T> findPage(int page, int size);
+	PagedList<? extends T> findPage(int page, int size);
 }

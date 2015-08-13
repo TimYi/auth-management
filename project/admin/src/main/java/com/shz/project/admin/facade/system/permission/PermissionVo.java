@@ -2,7 +2,7 @@ package com.shz.project.admin.facade.system.permission;
 
 import com.shz.foundation.persistence.UUIDBaseModel;
 
-public abstract class PermissionVo extends UUIDBaseModel {
+public class PermissionVo extends UUIDBaseModel {
 
 	/**权限名称*/
 	private String name;

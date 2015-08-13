@@ -27,7 +27,7 @@ public abstract class PagingController<T,I> {
 			HttpServletRequest request) {
 		String path=getBasePath()+"/page";
 		ModelAndView view=new ModelAndView(path);
-		PagedList<T> pagedList=getService().findPage(page, size);
+		PagedList<? extends T> pagedList=getService().findPage(page, size);
 		view.addObject("page", pagedList);
 		return view;
 	}
@@ -60,8 +60,8 @@ public abstract class PagingController<T,I> {
 	@RequestMapping(value="",method=RequestMethod.POST)
 	public @ResponseBody String add(I args) {
 		try {
-			T t=getService().add(args);
-			return RequestResult.success(t).toJson();
+			getService().add(args);
+			return RequestResult.success("添加成功").toJson();
 		} catch (Exception e) {
 			LogUtils.error(e);
 			return internalError(e);
@@ -71,8 +71,8 @@ public abstract class PagingController<T,I> {
 	@RequestMapping(value="{id}",method=RequestMethod.POST)
 	public @ResponseBody String edit(I args) {
 		try {
-			T t=getService().update(args);
-			return RequestResult.success(t).toJson();
+			getService().update(args);
+			return RequestResult.success("修改成功").toJson();
 		} catch (Exception e) {
 			LogUtils.error(e);
 			return internalError(e);
@@ -91,6 +91,7 @@ public abstract class PagingController<T,I> {
 	}
 	
 	protected String internalError(Exception e) {
+		e.printStackTrace();
 		return RequestResult.error(500, "服务器内部错误", e.getMessage()).toJson();
 	}
 }

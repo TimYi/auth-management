@@ -1,3 +1,13 @@
+(function() {
+	var local = window.location;  
+	var contextPath = local.pathname.split("/")[1];  
+	basePath = local.protocol+"//"+local.host+"/"+contextPath;
+}());
+
+document.write("<style>" +
+		"#title {display:none}"+
+		"</style>");
+
 /**
  * 为String类型添加format方法
  */
@@ -13,115 +23,195 @@ if (!String.format) {
   };
 }
 
+if(!String.replaceAll) {
+	String.prototype.replaceAll = function(s1,s2){
+		return this.replace(new RegExp(s1,"gm"),s2);
+	}
+}
+
+
+//tab数据格式：name,url,key
+
 function DynamicTab() {	
 	
 	this.tabs=new TabMap();
 	this.tabArea=$("<ul id=\"myTab\" class=\"nav nav-tabs\"></ul>");
 	this.contentArea=$("<div id=\"myTabContent\" class=\"tab-content\"></div>");
-	this.callback=null;
+	this.parentArea=null;
+	this.callback;
 	
-	this.init=function(selecter,callback) {
-		this.callback=callback;
-		var parentArea=$(selecter);
-		this.tabArea.appendTo(parentArea);
-		this.contentArea.appendTo(parentArea);
-	}
-	
-	/**
-	 * 创建新页面或者刷新已有页面
-	 */
-	this.create=function(tab) {
-		if(this.tabs.add(tab)) {
-			//TODO 添加tab
-		} else {
-			this.refresh(tab.key);
+	if(!DynamicTab._initialized) {
+		DynamicTab._initialized=true;
+		
+		DynamicTab.prototype.init=function(selecter,callback) {
+			this.callback=callback;
+			this.parentArea=$(selecter);
+			this.tabArea.appendTo(this.parentArea);
+			this.contentArea.appendTo(this.parentArea);
 		}
-	}
-	
-	/**
-	 * 刷新已有页面
-	 */
-	this.refresh=function(key) {
-		var tab=this.tabs.get(key);
-		if(tab!=null) {
-			//TODO 刷新tab
+		
+		/**创建新页面或者刷新已有页面*/
+		DynamicTab.prototype.create=function(tab) {
+			if(this.tabs.add(tab)) {
+				var dt=this;
+				$.ajax({
+					url:tab.url,
+					success:function(data) {
+						var content=dt.createContent(tab.key,data);
+						var tabNode=dt.createTab(tab.key,tab.name,content);
+						content.appendTo(dt.contentArea);
+						tabNode.appendTo(dt.tabArea);
+						dt.activeTab(tab.key);
+						if(dt.callback) {
+							dt.callback();
+						}
+					}
+				});				
+			} else {
+				this.refresh(tab.key);
+			}
 		}
-	}
-	
-	/**
-	 * 关闭页面
-	 */
-	this.close=function(key) {
-		var tab=this.tabs.get(key);
-		if(tab!=null) {
-			//TODO 关闭tab
+		
+		/**刷新已有页面*/
+		DynamicTab.prototype.refresh=function(key) {
+			var tab=this.tabs.get(key);
+			if(tab!=null) {
+				var dt=this;
+				$.ajax({
+					url:tab.url,
+					success:function(data) {
+						dt.refreshContent(tab.key,data);
+						dt.activeTab(tab.key);
+						if(dt.callback) {
+							dt.callback();
+						}
+					}
+				});
+			}
 		}
-		this.tabs.remove(key);
-	}
-	
-	/**
-	 * 在某个tab上进行跳转
-	 */
-	this.jump=function(oldKey,tab) {
-		this.close(oldKey);
-		this.create(tab);
-	}
-	
-	this.contentFormat="<div class=\"tab-pane fade\" id=\"{0}\">{1}</div>"
-	this.createContent(key,content) {
-		var content=$(String.format(this.contentFormat,key,content));
-		return content;
-	}
-	this.tabFormat="<li><a href=\"#{0}\" data-toggle=\"tab\">{1}</a></li>";
-	this.createTab(key,name,content) {
-		var title=content.find("#title").html();
-		if(title!=null) {
-			name=title;
+		
+		/**关闭页面*/
+		DynamicTab.prototype.close=function(key) {
+			var tab=this.tabs.get(key);
+			if(tab!=null) {
+				this.tabArea.children("li[key='"+key+"']").remove();
+				var content=this.contentArea.children("#"+key);
+				content.remove();
+			}
+			this.tabs.remove(key);
+			this.activeTab();
 		}
-		var tab=$(String.format(this.tabFormat,key,name));
-		return tab;
+		
+		/**在某个tab上进行跳转*/
+		DynamicTab.prototype.jump=function(oldKey,tab) {
+			this.close(oldKey);
+			this.create(tab);
+		}
+		
+		/**创建内容*/
+		DynamicTab.prototype.contentFormat="<div class=\"tab-pane fade\" id=\"{0}\" style=\"margin-top:1em;\">{1}</div>"
+		DynamicTab.prototype.createContent=function(key,content) {
+			var contentNode=$(String.format(this.contentFormat,key,content));
+			return contentNode;
+		}
+		
+		DynamicTab.prototype.refreshContent=function(key,content) {
+			var contentNode=this.contentArea.children("#"+key);
+			contentNode.html(content);
+		}
+		
+		/**创建标签*/
+		DynamicTab.prototype.tabFormat="<li key=\"{0}\">" +
+				"<a href=\"#{0}\" data-toggle=\"tab\">{1}</a>" +
+				"<img src=\""+basePath+"/resources/image/close.png\" onclick=\"dynamicTab.close('{0}')\" style=\"position:absolute;top:0;right:0;height:18px;width:18px;cursor:pointer\"/>"
+				"</li>";
+		DynamicTab.prototype.createTab=function(key,name,content) {
+			var title=content.find("#title").html();
+			if(title!=null) {
+				name=title;
+			}
+			var tab=$(String.format(this.tabFormat,key,name));
+			return tab;
+		}
+		
+		DynamicTab.prototype.activeTab=function(key) {
+			this.tabArea.children("li").each(function(){
+				$(this).removeClass("active");
+			});
+			this.contentArea.children("div").each(function(){
+				$(this).removeClass("active");
+				$(this).removeClass("in");
+			})
+			if(!key) {//如果是close的情况，将第一个tab设为active
+				var firstTab=$($(this.tabArea.children("li")).get(0));
+				var firstContent=$($(this.contentArea.children("div")).get(0));
+				firstTab.addClass("active");
+				firstContent.addClass("active");
+				firstContent.addClass("in");
+			} else {
+				this.tabArea.children("li[key='"+key+"']").addClass("active");
+				this.contentArea.children("#"+key).addClass("active");
+				this.contentArea.children("#"+key).addClass("in");
+			}			
+		}
 	}
 }
 
+//初始化dynamicTab实例
+dynamicTab=new DynamicTab();
+window.dynamicTab=dynamicTab;
+
+Array.prototype.remove=function(index){ 
+	this.splice(index,1); 
+} 
+
 function TabMap() {
 	this.tabs=new Array();
-	/**
-	 * 添加tab，如果之前并没有重复，返回true，否则返回false
-	 */
-	this.add=function(tab) {
-		var key=tab.key;
-		if(this.contains(key)<0) {
+	
+	if(!TabMap.prototype._initialized) {
+		TabMap.prototype._initialized=true;
+		
+		/**
+		 * 添加tab，如果之前并没有重复，返回true，否则返回false
+		 */
+		TabMap.prototype.add=function(tab) {
+			var key=tab.key;
+			if(this.contains(key)<0) {
+				this.tabs.push(tab);
+				return true;
+			}
 			return false;
 		}
-		this.tabs.push(tab);
-		return true;
-	}
-	/**
-	 * 删除和key对应的tab
-	 */
-	this.remove=function(key) {
-		var i=this.contains(key);
-		if(i>=0) {
-			this.tabs.remove(i);
-		}
-	}
-	this.get=function(key) {
-		var i=this.contains(key);
-		if(i>=0) {
-			return this.tabs[i];
-		}
-		return null;
-	}
-	/**
-	 * 检查key是否已存在，如果存在，返回其所在index，否则返回-1
-	 */
-	this.contains=function(key) {
-		for(var i=0;i<this.tabs.length;i++) {
-			var currentTab=this.tabs[i];
-			if(currentTab.key==key) {
-				return i;
+		
+		/**
+		 * 删除和key对应的tab
+		 */
+		TabMap.prototype.remove=function(key) {
+			var i=this.contains(key);
+			if(i>=0) {
+				this.tabs.remove(i);
 			}
 		}
-		return -1;
+		
+		TabMap.prototype.get=function(key) {
+			var i=this.contains(key);
+			if(i>=0) {
+				return this.tabs[i];
+			}
+			return null;
+		}
+		
+		/**
+		 * 检查key是否已存在，如果存在，返回其所在index，否则返回-1
+		 */
+		TabMap.prototype.contains=function(key) {
+			for(var i=0;i<this.tabs.length;i++) {
+				var currentTab=this.tabs[i];
+				if(currentTab.key==key) {
+					return i;
+				}
+			}
+			return -1;
+		}
 	}
 }

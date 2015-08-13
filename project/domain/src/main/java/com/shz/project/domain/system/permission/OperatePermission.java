@@ -12,7 +12,7 @@ public class OperatePermission extends Permission {
 	/**操作所属领域*/
 	private FieldPermission field;
 
-	@ManyToOne(optional=false)
+	@ManyToOne
 	public FieldPermission getField() {
 		return field;
 	}

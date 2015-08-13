@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <%@ taglib  prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<div id="title">添加菜单</div>
 <form role="form" action="/menu" class="form-horizontal ajax" method="post" redirect="/menu">
    <div class="form-group">
        <label for="name" class="col-sm-2 control-label">名称:</label>
@@ -43,6 +44,5 @@
    </div>
    <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-default">提交</button>
-      <button onclick="renderBody('/menu')" type="button" class="btn btn-default">返回</button>
    </div>
 </form>

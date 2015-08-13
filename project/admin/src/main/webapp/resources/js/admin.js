@@ -1,20 +1,26 @@
-var local = window.location;  
-var contextPath = local.pathname.split("/")[1];  
-var basePath = local.protocol+"//"+local.host+"/"+contextPath;
 
 loadHomePage();
 
+dynamicTab.init("#body",subPageChecks);
+
 function subPageChecks() {
+	
 	$('form.ajax').on('submit', function(e) {
 		var url=$(this).attr("action");
 		url=basePath+url;
-		var redirect=$(this).attr("redirect");	
+		var oldkey=$(this).parent("div.tab-pane").attr("id");
+		var redirect=$(this).attr("redirect");			
 	    $(this).ajaxSubmit({
 	        url: url, 
 	        dataType:"json",
 	        success: function(data) { 
-	        	if(data.status=="OK") {
-					renderBody(redirect);
+	        	if(data.status=="OK") {	
+	        		alert(data.result);
+					if(typeof(redirect)=="undefined" || redirect==null) {
+						dynamicTab.close(oldkey);
+					} else {
+						jumpTo(oldkey,redirect);
+					}
 				} else {
 					alert("错误原因："+data.errorDescription);
 				}
@@ -22,6 +28,41 @@ function subPageChecks() {
 	    });
 	    e.preventDefault();
 	});
+	
+	$('a.ajax').on('click', function(e) {
+		var url=$(this).attr("href");
+		var oldkey=$(this).parent("div.tab-pane").attr("id");
+		if($(this).attr("target")=="_Blank") {
+			createTab(url);
+		} else {
+			jumpTo(oldkey,url);
+		}		
+		e.preventDefault();
+	})
+}
+
+function createTab(url) {
+	var key=url.split("?")[0];
+	var fullurl=basePath+url;
+    key=key.replaceAll("/","-");
+    var tab={key:key,url:fullurl,name:"未命名"};
+    dynamicTab.create(tab);
+}
+
+function jumpTo(oldkey,url,key) {
+	if(!key) {
+		key=url.split("?")[0];
+		key=key.replaceAll("/","-");
+	}	
+	var fullurl=basePath+url;    
+    var tab={key:key,url:fullurl,name:"未命名"};
+    dynamicTab.jump(oldkey,tab);
+}
+
+function refreshTab(url) {
+	var key=url.split("?")[0];
+    key=key.replaceAll("/","-");
+    dynamicTab.refresh(key);
 }
 
 function ajax(params) {
@@ -88,27 +129,23 @@ function treeview(data) {
 	  color: "#337ab7",	  
 	  onNodeSelected: function(event, data) {
 		  if(data.type=="URL") {
-			  renderBody(data.url);
+			  createTab(data.url);
 		  }	    
 	  },
 	});
 }
 
-function renderBody(url) {
-	url=basePath+url;
-	$("#body").load(url,function(){
-		subPageChecks();
-	});
-}
-
 //后台增删页面调用，删除接口调用
-function addPage(url,data) {
+function addPage(url,params) {
 	var addPageUrl=url+"/add";
-	renderBody(addPageUrl);
+	if(params) {
+		addPageUrl=addPageUrl+"?"+params;
+	}
+	createTab(addPageUrl);
 }
 function editPage(url,id) {
 	var editPageUrl=url+"/"+id+"/edit";
-	renderBody(editPageUrl);
+	createTab(editPageUrl);
 }
 function del(url,id) {
 	bootbox.confirm("确定要删除它吗？",
@@ -128,4 +165,34 @@ function del(url,id) {
 			}
 		});
 	});
+}
+
+/**
+ * 分页
+ */
+function pagination(totalPages,startPage,url,size,id) {
+	startPage=startPage?startPage:1;
+	if(totalPages==0) totalPages=1;
+	size=size?size:8;
+	id=id?id:"#pagination";
+	var visiblePages=5;
+	var pagination=$(id);
+	oldkey=pagination.parent("div.tab-pane").attr("id");
+	pagination.twbsPagination({
+		startPage:startPage,
+        totalPages: totalPages,
+        visiblePages: visiblePages,
+        first:"首页",
+        prev:"上一页",
+        next:"下一页",
+        last:"尾页",
+        paginationClass:'pagination',
+        onPageClick: function (event, page) {
+        	var key=url.replaceAll("/","-");
+            var jumpUrl=url+"/page/"+page+"?size="+size;
+            jumpTo(oldkey,jumpUrl,key);
+        }
+    });
+	pagination.find("li.active").removeClass("active");
+	pagination.find("a:contains('"+startPage+"')").parent("li.page").addClass("active");
 }

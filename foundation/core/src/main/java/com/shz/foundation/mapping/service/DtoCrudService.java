@@ -1,10 +1,12 @@
 package com.shz.foundation.mapping.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.shz.foundation.mapping.adapter.DtoAdapter;
 import com.shz.foundation.persistence.Identified;
 import com.shz.foundation.service.CrudService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,14 +64,14 @@ public abstract class DtoCrudService<D extends Identified<ID>, T, I extends Iden
 	}
 
 	@Override
-	public Iterable<T> findAll() {
+	public List<T> findAll() {
 		Iterable<D> all=getRepository().findAll();
 		if(all==null)return null;
 		return adapter.convertDoList(all);
 	}
 
 	@Override
-	public Iterable<T> findAll(Iterable<ID> ids) {
+	public List<T> findAll(Iterable<ID> ids) {
 		Iterable<D> all=getRepository().findAll(ids);
 		if(all==null)return null;
 		return adapter.convertDoList(all);
