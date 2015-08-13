@@ -2,6 +2,7 @@ package com.shz.project.domain.system.role;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 
@@ -17,19 +18,27 @@ import com.shz.project.domain.system.user.SystemUser;
 @Entity
 public class Role extends UUIDBaseModel {
 
-	/**角色类型*/
-	private RoleType type;
+	/**角色名称*/
+	private String name;
+	/**角色描述*/
+	private String description;
 	/**用户角色*/
 	private Set<SystemUser> users;
 	/**角色通用权限*/
 	private Set<Permission> permissions;
 	
-	
-	public RoleType getType() {
-		return type;
+	@Column(nullable=false,unique=true)
+	public String getName() {
+		return name;
 	}
-	public void setType(RoleType type) {
-		this.type = type;
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	@ManyToMany(mappedBy="roles")
 	public Set<SystemUser> getUsers() {
@@ -44,14 +53,5 @@ public class Role extends UUIDBaseModel {
 	}
 	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
-	}
-
-	/**
-	 * 角色类型，用于标记角色用于部门内部，还是通用角色
-	 * @author pc
-	 *
-	 */
-	public static enum RoleType {
-		GENERAL,DEPARTMENT;
 	}
 }

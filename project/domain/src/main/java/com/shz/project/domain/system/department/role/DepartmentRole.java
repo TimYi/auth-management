@@ -28,6 +28,7 @@ public class DepartmentRole extends UUIDBaseModel {
 	private Role role;
 	/**部门角色特殊权限*/
 	private Set<Permission> permissions;
+	
 	@ManyToOne(optional=false)
 	public Department getDepartment() {
 		return department;

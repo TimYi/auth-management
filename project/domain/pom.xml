@@ -160,6 +160,13 @@
 		</dependency>
 		<!-- container end -->	
 		
+		<!-- apache shiro -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+		</dependency>
+		<!-- shiro end -->
+		
 		<!-- test begin -->
 		<dependency>
 			<groupId>junit</groupId>

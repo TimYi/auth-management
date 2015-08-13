@@ -20,7 +20,7 @@ public interface DtoAdapter<D, T, I> extends Converter<D, T> {
 	 * @param t never null，应返回空值
 	 * @return
 	 */
-	D convertToDo(I t);
+	D convertToDo(I i);
 	
 	/**
 	 * 将Do转换为Dto
@@ -37,7 +37,7 @@ public interface DtoAdapter<D, T, I> extends Converter<D, T> {
 	 * @param d never null
 	 * @return
 	 */
-	D update(I t, D d);
+	D update(I i, D d);
 	
 	List<T> convertDoList(Iterable<? extends D> ds);
 }

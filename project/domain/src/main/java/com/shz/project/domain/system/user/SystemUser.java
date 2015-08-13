@@ -16,6 +16,8 @@ public class SystemUser extends UUIDBaseModel {
 
 	private String username;
 	private String password;
+	/**加密盐*/
+	private String salt;
 	/**用户是否可用*/
 	private boolean verified;
 	/**用户所拥有的角色*/
@@ -41,6 +43,12 @@ public class SystemUser extends UUIDBaseModel {
 	}
 	public void setVerified(boolean verified) {
 		this.verified = verified;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	@ManyToMany
 	public Set<Role> getRoles() {
