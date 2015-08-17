@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shz.project.admin.authenticate.SystemUserRealm.ShiroUser;
 import com.shz.project.admin.facade.system.department.DepartmentDto;
 import com.shz.project.admin.facade.system.department.DepartmentService;
 import com.shz.project.admin.facade.system.role.RoleDto;
@@ -83,6 +87,23 @@ public class UserController extends PagingController<SystemUserDto, SystemUserIn
 		ModelAndView view=new ModelAndView(getBasePath()+"/authentication");
 		PagedList<SystemUserDto> users=getService().unauthenticatedUsers(page, size);
 		view.addObject("page", users);
+		return view;
+	}
+	
+	@RequestMapping(value="profile/{userId}",method=RequestMethod.GET)
+	public ModelAndView profile(@PathVariable String userId) {
+		Subject subject=SecurityUtils.getSubject();
+		if(!subject.isAuthenticated()) {
+			throw new AuthenticationException("请登录！");
+		}
+		ShiroUser user=(ShiroUser)subject.getPrincipal();
+		String id=user.getId();
+		if(!id.equals(userId)) {
+			throw new RuntimeException("您只能访问您自己的个人信息");
+		}
+		SystemUserDto info=getService().findOne(userId);
+		ModelAndView view=new ModelAndView(getBasePath()+"/profile");
+		view.addObject("t", info);
 		return view;
 	}
 }

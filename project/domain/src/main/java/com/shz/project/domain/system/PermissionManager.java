@@ -22,8 +22,8 @@ public class PermissionManager {
 	@Autowired
 	private SystemUserRepository userRepository;
 	
-	public Set<String> extractPermissions(String username) {
-		SystemUser user=userRepository.getByUsername(username);
+	public Set<String> extractPermissions(String userId) {
+		SystemUser user=userRepository.findOne(userId);
 		if(user==null)return null;
 		return extractPermissions(user);
 	}

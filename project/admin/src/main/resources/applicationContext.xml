@@ -51,6 +51,7 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory"/>
 	</bean>
 
+	<aop:config proxy-target-class="true"></aop:config>
 	<!-- 使用annotation定义事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	

@@ -31,8 +31,9 @@ public class SystemUserRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
-		String username=principals.getPrimaryPrincipal().toString();
-		Set<String> permissions=permissionManager.extractPermissions(username);
+		ShiroUser user=(ShiroUser)principals.getPrimaryPrincipal();
+		String userId=user.getId();
+		Set<String> permissions=permissionManager.extractPermissions(userId);
 		SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
 		info.setStringPermissions(permissions);
 		return info;
@@ -47,7 +48,8 @@ public class SystemUserRealm extends AuthorizingRealm {
 		if(user==null || !user.isVerified()) {
 			throw new AuthenticationException("用户不存在或未通过认证");
 		}
-		return new SimpleAuthenticationInfo(user.getUsername(),
+		ShiroUser shiroUser=new ShiroUser(user.getId(), user.getUsername(), user.getRealname());
+		return new SimpleAuthenticationInfo(shiroUser,
 				user.getPassword(),ByteSource.Util.bytes(user.getSalt()),getName());
 	}
 
@@ -57,5 +59,37 @@ public class SystemUserRealm extends AuthorizingRealm {
 	@PostConstruct
 	public void initCredentialsMatcher() {
 		setCredentialsMatcher(EncryptService.CREDENTIALS_MATCHER);
+	}
+	
+	public static class ShiroUser {
+		private String id;
+		private String username;
+		private String realname;
+		
+		public ShiroUser(){}
+		public ShiroUser(String id, String username, String realname) {
+			this.id=id;
+			this.username=username;
+			this.realname=realname;
+		}
+
+		public String getId() {
+			return id;
+		}
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String getUsername() {
+			return username;
+		}
+		public void setUsername(String username) {
+			this.username = username;
+		}
+		public String getRealname() {
+			return realname;
+		}
+		public void setRealname(String realname) {
+			this.realname = realname;
+		}
 	}
 }
