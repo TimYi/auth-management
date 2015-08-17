@@ -1,5 +1,6 @@
 
 loadHomePage();
+subPageChecks();
 
 dynamicTab.init("#body",subPageChecks);
 

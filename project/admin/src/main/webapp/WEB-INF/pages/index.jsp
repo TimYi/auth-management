@@ -7,8 +7,8 @@
 <my:admin>
 <jsp:attribute name="user">
 <shiro:user>  
-<li><a>[<shiro:principal/>]您好</a></li>
-<li><a class="ajax" href="/user/profile">个人中心</a></li>
+<li><a>[<shiro:principal property="username"/>]您好</a></li>
+<li><a class="ajax" href="/user/profile/<shiro:principal property="id"/>">个人中心</a></li>
 <li><a href="<c:url value='/logout'/>">退出</a></li>
 </shiro:user> 
 </jsp:attribute>
