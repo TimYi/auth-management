@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <%@ taglib  prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<div id="title">用户列表</div>
+<div id="title">访问权限列表</div>
 <div class="row">
 <div class="col-sm-offset-1">
 	<button class="btn btn-primary" onclick="addPage('/access')">添加</button>

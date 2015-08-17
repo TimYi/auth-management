@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <%@ taglib  prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<div id="title">添加用户</div>
+<div id="title">添加访问权限</div>
 <form role="form" action="/access" class="form-horizontal ajax" method="post" redirect="/access">
    <div class="form-group">
        <label for="ordernum" class="col-sm-2 control-label">序号</label>
