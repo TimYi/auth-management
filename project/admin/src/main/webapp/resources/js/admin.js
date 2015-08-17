@@ -96,6 +96,10 @@ function loadHomePage() {
 				var node=createNodeFromMenu(menu);
 				treeNode[i]=node;
 			}
+			//解决冷启动的问题
+			if(treeNode.length==0) {
+				treeNode[0]={text:"菜单管理",url:"/menu",type:"URL",id:"menu"};
+			}
 			treeview(treeNode);			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown) {

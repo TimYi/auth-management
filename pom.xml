@@ -598,6 +598,9 @@
 						<source>${java.version}</source>
 						<target>${java.version}</target>
 						<showWarnings>true</showWarnings>
+						<verbose>true</verbose>
+			            <fork>true</fork>
+			            <executable>${maven.compiler.executable}</executable>
 					</configuration>
 				</plugin>
 
