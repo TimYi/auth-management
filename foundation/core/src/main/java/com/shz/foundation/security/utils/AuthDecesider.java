@@ -13,7 +13,7 @@ import org.apache.shiro.subject.Subject;
  */
 public class AuthDecesider {
 
-	private static final String IS_USER="isUser";
+	private static final String IS_USER="user";
 	private static final String ANON="anon";
 	
 	public static void permissionDeside(String permission, Consumer<String> isUser, Consumer<String> anon, Consumer<String> perms) {
