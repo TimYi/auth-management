@@ -1,17 +1,17 @@
 package com.shz.project.admin.facade.system.user;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shz.foundation.mapping.service.DtoPagingService;
+import com.shz.foundation.persistence.springdata.PageableBuilder;
+import com.shz.foundation.persistence.springdata.PagedList;
 import com.shz.project.domain.system.department.Department;
 import com.shz.project.domain.system.department.DepartmentRepository;
-import com.shz.project.domain.system.role.Role;
 import com.shz.project.domain.system.role.RoleRepository;
 import com.shz.project.domain.system.user.SystemUser;
 import com.shz.project.domain.system.user.SystemUserManager;
@@ -46,37 +46,20 @@ public class SystemUserService extends DtoPagingService<SystemUser, SystemUserDt
 		return adapter.convertToDetailedDto(u);
 	}
 	
-	public void regist(String username, String password, String departmentId) {
-		Department department=new Department();
-		manager.regist(username, password, department);
-	}
-	
-	public void authenticate(String userId, List<String> roleIds) {
-		SystemUser user=userRepository.findOne(userId);
-		if(user==null) return;
-		Set<Role> roles=null;
-		if(roleIds!=null) {
-			roles=new HashSet<>();
-			for (String roleId : roleIds) {
-				Role role=roleRepository.findOne(roleId);
-				if(role!=null) roles.add(role);
-			}
+	public void regist(String username, String password, String realname, String email, String telephone,
+			String departmentId) {
+		Department department=null;
+		if(StringUtils.isNotBlank(departmentId)) {
+			department=departmentRepository.findOne(departmentId);
 		}
-		manager.authenticate(user, roles);
+		manager.regist(username, password, realname, email, telephone, department);
 	}
 	
-	public void addRole(String userId, String roleId) {
-		SystemUser user=userRepository.findOne(userId);
-		Role role=roleRepository.findOne(roleId);
-		if(user==null || role==null) return;
-		manager.addRole(user, role);
-	}
-	
-	public void removeRole(String userId, String roleId) {
-		SystemUser user=userRepository.findOne(userId);
-		Role role=roleRepository.findOne(roleId);
-		if(user==null || role==null) return;
-		manager.removeRole(user, role);
+	public PagedList<SystemUserDto> unauthenticatedUsers(int page, int size) {
+		Pageable pageable=PageableBuilder.build(page, size);
+		Page<SystemUser> users=userRepository.findByVerified(false, pageable);
+		Page<SystemUserDto> result=users.map(adapter);
+		return new PagedList<>(result);
 	}
 	
 	public SystemUserDto getByUsername(String username) {

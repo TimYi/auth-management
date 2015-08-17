@@ -1,6 +1,5 @@
 package com.shz.foundation.persistence.springdata;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -30,30 +29,6 @@ public class PagedList<T> {
 		this.page=page.getNumber()+1;
 		this.size=page.getSize();
 		this.result=page.getContent();
-	}
-	
-	/**
-	 * 为满足前端一些需要，有时候要将获取全部数据的list转换成pagedList
-	 * @param list
-	 */
-	public PagedList(List<T> list) {
-		this.totalCount=list.size();
-		this.totalPages=1;
-		this.page=1;
-		this.size=list.size();
-		this.result=list;
-	}
-	
-	public PagedList(Iterable<T> iterable) {
-		List<T> list=new ArrayList<T>();
-		for (T t : iterable) {
-			list.add(t);
-		}
-		this.totalCount=list.size();
-		this.totalPages=1;
-		this.page=1;
-		this.size=list.size();
-		this.result=list;
 	}
 	
 	/**

@@ -1,5 +1,7 @@
 package com.shz.project.domain.system.user;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface SystemUserRepository extends PagingAndSortingRepository<SystemUser, String> {
@@ -9,4 +11,6 @@ public interface SystemUserRepository extends PagingAndSortingRepository<SystemU
 	SystemUser getByEmail(String email);
 	
 	SystemUser getByTelephone(String telephone);
+	
+	Page<SystemUser> findByVerified(boolean verified,Pageable pageable);
 }

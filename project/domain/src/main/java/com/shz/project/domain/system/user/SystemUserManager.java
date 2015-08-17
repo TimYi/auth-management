@@ -1,6 +1,5 @@
 package com.shz.project.domain.system.user;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +42,8 @@ public class SystemUserManager {
 		
 		//生成加密密码
 		String password=entity.getPassword();
+		checkPassword(password);
+		
 		String salt=EncryptService.generateSalt();
 		entity.setSalt(salt);
 		password=EncryptService.encryptPassword(password, salt);
@@ -74,37 +75,25 @@ public class SystemUserManager {
 		return user;
 	}
 	
-	public SystemUser regist(String username, String password, Department department) {
-		if(StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
-			throw new RuntimeException("用户名和密码都不能位空，请重新输入");
-		}
+	public SystemUser regist(String username, String password, String realname, String email, String telephone, Department department) {
 		SystemUser user=new SystemUser();
 		user.setUsername(username);
 		user.setPassword(password);
+		user.setRealname(realname);
+		user.setPassword(password);
+		user.setEmail(email);
+		user.setTelephone(telephone);
 		user.setDepartment(department);
+		user.setVerified(false);
 		return add(user);
 	}
 	
-	/**对新注册的用户进行审核，审核通过账户才能使用。审核的同时，可以为用户分配角色*/
-	public SystemUser authenticate(SystemUser user, Set<Role> roles) {
-		user.setVerified(true);
-		user.setRoles(roles);
-		return user;
-	}
-	
-	public SystemUser addRole(SystemUser user, Role role) {
-		Set<Role> roles=user.getRoles();
-		if(roles==null) roles=new HashSet<>();
-		roles.add(role);
-		user.setRoles(roles);
-		return user;
-	}
-	
-	public SystemUser removeRole(SystemUser user, Role role) {
-		Set<Role> roles=user.getRoles();
-		if(roles==null) return user;
-		roles.remove(role);
-		user.setRoles(roles);
+	public SystemUser changePassword(SystemUser user, String password) {
+		checkPassword(password);
+		String salt=EncryptService.generateSalt();
+		user.setSalt(salt);
+		password=EncryptService.encryptPassword(password, salt);
+		user.setPassword(password);
 		return user;
 	}
 	
@@ -149,6 +138,14 @@ public class SystemUserManager {
 		SystemUser tUser=repository.getByEmail(telephone);
 		if(tUser!=null) {
 			throw new RuntimeException("手机号码已存在，请更换");
+		}
+	}
+	private void checkPassword(String password) {
+		if(StringUtils.isBlank(password)) {
+			throw new RuntimeException("密码不能为空");
+		}
+		if(password.length()<6) {
+			throw new RuntimeException("密码长度不能小于6位");
 		}
 	}
 }

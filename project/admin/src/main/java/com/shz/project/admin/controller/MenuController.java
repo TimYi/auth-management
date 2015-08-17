@@ -76,7 +76,7 @@ public class MenuController extends PagingController<MenuVo, MenuInputArgs> {
 			return RequestResult.success(menus).toJson();
 		} catch (Exception e) {
 			LogUtils.error(e);
-			return internalError(e);
+			return RequestResult.internalError(e);
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class MenuController extends PagingController<MenuVo, MenuInputArgs> {
 			return RequestResult.success(menus).toJson();
 		} catch (Exception e) {
 			LogUtils.error(e);
-			return internalError(e);
+			return RequestResult.internalError(e);
 		}
 	}
 }

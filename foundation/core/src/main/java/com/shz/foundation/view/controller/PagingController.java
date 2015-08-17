@@ -70,7 +70,7 @@ public abstract class PagingController<T,I> {
 			return RequestResult.success("添加成功").toJson();
 		} catch (Exception e) {
 			LogUtils.error(e);
-			return internalError(e);
+			return RequestResult.internalError(e);
 		}				
 	}
 	
@@ -81,7 +81,7 @@ public abstract class PagingController<T,I> {
 			return RequestResult.success("修改成功").toJson();
 		} catch (Exception e) {
 			LogUtils.error(e);
-			return internalError(e);
+			return RequestResult.internalError(e);
 		}				
 	}
 	
@@ -92,12 +92,7 @@ public abstract class PagingController<T,I> {
 			return RequestResult.success("删除成功").toJson();
 		} catch (Exception e) {
 			LogUtils.error(e);
-			return internalError(e);
+			return RequestResult.internalError(e);
 		}
-	}
-	
-	protected String internalError(Exception e) {
-		e.printStackTrace();
-		return RequestResult.error(500, "服务器内部错误", e.getMessage()).toJson();
 	}
 }

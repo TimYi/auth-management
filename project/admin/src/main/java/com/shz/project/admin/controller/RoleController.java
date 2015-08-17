@@ -48,7 +48,7 @@ public class RoleController extends PagingController<RoleDto, RoleInputArgs> {
 			PagedList<RoleDto> pagedList=getService().findByType(RoleType.DEPARTMENT, page, size);
 			return RequestResult.success(pagedList).toJson();
 		} catch (Exception e) {
-			return internalError(e);
+			return RequestResult.internalError(e);
 		}		
 	}
 }

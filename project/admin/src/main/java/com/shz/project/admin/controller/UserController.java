@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shz.project.admin.facade.system.department.DepartmentDto;
@@ -24,7 +26,7 @@ import com.shz.project.admin.facade.system.user.SystemUserService;
 import com.shz.project.domain.system.role.Role;
 import com.shz.project.domain.system.user.SystemUser;
 import com.shz.project.domain.system.user.SystemUserRepository;
-import com.shz.foundation.service.PagingService;
+import com.shz.foundation.persistence.springdata.PagedList;
 import com.shz.foundation.view.controller.PagingController;
 
 @Controller
@@ -43,7 +45,7 @@ public class UserController extends PagingController<SystemUserDto, SystemUserIn
 	
 	
 	@Override
-	protected PagingService<SystemUserDto, SystemUserInputArgs, String> getService() {
+	protected SystemUserService getService() {
 		return service;
 	}
 	@Override
@@ -73,6 +75,14 @@ public class UserController extends PagingController<SystemUserDto, SystemUserIn
 		List<String> roleIds=userRoles.stream().map(Role::getId).collect(Collectors.toList());
 		view.addObject("rids", roleIds);
 		view.addObject("rs", roles);
+		return view;
+	}
+	
+	@RequestMapping(value="authentication/page/{page}",method=RequestMethod.GET)
+	public ModelAndView authentication(@PathVariable Integer page,@RequestParam(defaultValue="8") Integer size) {
+		ModelAndView view=new ModelAndView(getBasePath()+"/authentication");
+		PagedList<SystemUserDto> users=getService().unauthenticatedUsers(page, size);
+		view.addObject("page", users);
 		return view;
 	}
 }

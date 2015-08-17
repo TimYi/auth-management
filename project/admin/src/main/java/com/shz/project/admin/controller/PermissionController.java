@@ -62,7 +62,7 @@ public class PermissionController extends PagingController<PermissionVo, Permiss
 			PagedList<FieldPermissionVo> pagedList=fieldService.findPage(page, size);
 			return RequestResult.success(pagedList).toJson();
 		} catch (Exception e) {
-			return internalError(e);
+			return RequestResult.internalError(e);
 		}
 	}
 	

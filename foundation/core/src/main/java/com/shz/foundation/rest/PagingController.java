@@ -24,7 +24,7 @@ public abstract class PagingController<T,I> {
 	@RequestMapping(value="all",method=RequestMethod.GET)
 	public String page() {
 		Iterable<? extends T> result=getService().findAll();
-		return RequestResult.success(new PagedList<>(result)).toJson();
+		return RequestResult.success(result).toJson();
 	}
 	
 	@RequestMapping(value="{id}",method=RequestMethod.GET)

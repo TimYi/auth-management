@@ -3,6 +3,8 @@ package com.shz.foundation.rest;
 import java.io.IOException;
 
 import com.shz.foundation.utils.JsonSerializer;
+import com.shz.foundation.utils.LogUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,5 +105,10 @@ public abstract class RequestResult {
 		public RequestStatus getStatus() {
 			return RequestStatus.ERROR;
 		}
+	}
+	
+	public static String internalError(Exception e) {
+		LogUtils.debug(e.toString());
+		return RequestResult.error(500, "服务器内部错误", e.getMessage()).toJson();
 	}
 }
