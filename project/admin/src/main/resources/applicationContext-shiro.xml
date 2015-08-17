@@ -15,24 +15,33 @@
 	<bean id="shiroDbRealm" class="com.shz.project.admin.authenticate.SystemUserRealm">
 	</bean>
 	
+	<!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
+	<bean id="filterChainManager" class="org.apache.shiro.web.filter.mgt.DefaultFilterChainManager">
+	</bean>
+	
 	<!-- Shiro Filter -->
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	<bean id="shiroFilter" class="com.shz.foundation.security.access.InjectedShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/" />
-		<!-- 
+		<property name="filterChainManager" ref="filterChainManager" />
 		<property name="filterChainDefinitions">
 			<value>
-				/login = authc
+				/login = authc				
+				/logout = logout				
+				/resources/** = anon
+				
+				<!-- 
+				/login = authc				
 				/logout = logout
 				/static/** = anon
 				/api/** = anon
 				/register/** = anon
 				/admin/** = roles[admin]
 				/** = user
+				-->
 			</value>			
 		</property>
-		-->
 	</bean>
 	
 	<!-- 用户授权信息Cache, 采用EhCache --> 

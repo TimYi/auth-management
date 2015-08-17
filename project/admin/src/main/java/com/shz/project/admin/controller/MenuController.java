@@ -59,7 +59,7 @@ public class MenuController extends PagingController<MenuVo, MenuInputArgs> {
 	
 	@Override
 	@RequestMapping(value="{id}/edit",method=RequestMethod.GET)
-	public ModelAndView eidtPage(@PathVariable String id) {
+	public ModelAndView editPage(@PathVariable String id) {
 		String path=getBasePath()+"/edit";
 		ModelAndView view=new ModelAndView(path);
 		MenuVo t=getService().findOne(id);

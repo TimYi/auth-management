@@ -5,4 +5,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface SystemUserRepository extends PagingAndSortingRepository<SystemUser, String> {
 
 	SystemUser getByUsername(String username);
+	
+	SystemUser getByEmail(String email);
+	
+	SystemUser getByTelephone(String telephone);
 }

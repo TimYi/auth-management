@@ -2,8 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="script" fragment="true" %>
 <%@ attribute name="style" fragment="true" %>
+<%@ attribute name="user" fragment="true" %>
 <!DOCTYPE html>
-<html <c:if test="${!empty htmlClass }">class="${htmlClass }"</c:if>>
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,6 +35,11 @@
 		   <div class="navbar-header">
 		      <a class="navbar-brand" href="<c:url value='/'/>">双丰网络后台管理系统</a>
 		   </div>
+		   <div>
+		      <ul class="nav navbar-nav">
+		      <jsp:invoke fragment="user"></jsp:invoke>
+		      </ul>
+		   </div>
 		</nav>
         <div class="row">
             <div class="col-sm-2"> 
@@ -51,7 +57,7 @@
     <script src="<c:url value='/resources/js/jquery-1.11.3.min.js'/>"></script>
     <script src="<c:url value='/resources/js/jquery.form.js'/>"></script>
     <script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
-    <script src="<c:url value='/resources/js/bootstrap-treeview.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/bootstrap-treeview.js'/>"></script>
     <script src="<c:url value='/resources/js/bootbox.min.js'/>"></script>
     <script src="<c:url value='/resources/js/art-template.js'/>"></script>
     <script charset="utf-8" src="<c:url value='/resources/js/kindeditor.js'/>"></script>
@@ -59,7 +65,9 @@
     <script charset="utf-8" src="<c:url value='/resources/js/lang/zh_CN.js'/>"></script>
 	<script src="<c:url value='/resources/js/bootstrap-datepicker.min.js'/>"></script>
     <script src="<c:url value='/resources/js/jquery.twbsPagination.min.js'/>"></script>
+    <script src="<c:url value='/resources/js/base.js'/>"></script>
     <script src="<c:url value='/resources/js/dynamicTabs.js'/>"></script>
+    <script src="<c:url value='/resources/js/component.js'/>"></script>
     <script src="<c:url value='/resources/js/admin.js'/>"></script>
     <jsp:invoke fragment="script"></jsp:invoke>
 </body>

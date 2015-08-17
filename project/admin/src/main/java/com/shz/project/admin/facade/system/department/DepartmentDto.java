@@ -1,9 +1,9 @@
 package com.shz.project.admin.facade.system.department;
 
 import java.util.List;
+import java.util.Set;
 
 import com.shz.foundation.persistence.UUIDBaseModel;
-import com.shz.project.admin.facade.system.department.role.DepartmentRoleDto;
 import com.shz.project.admin.facade.system.user.SystemUserVo;
 
 public class DepartmentDto extends UUIDBaseModel {
@@ -11,11 +11,11 @@ public class DepartmentDto extends UUIDBaseModel {
 	/**部门名称*/
 	private String name;
 	/**部门描述*/
-	private String desrciption;
+	private String description;
 	/**部门用户*/
 	private List<SystemUserVo> users;
 	/**部门角色*/
-	private List<DepartmentRoleDto> roles;
+	private Set<DepartmentRolePermissionsVo> roles;
 	
 	public String getName() {
 		return name;
@@ -23,11 +23,11 @@ public class DepartmentDto extends UUIDBaseModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDesrciption() {
-		return desrciption;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesrciption(String desrciption) {
-		this.desrciption = desrciption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public List<SystemUserVo> getUsers() {
 		return users;
@@ -35,10 +35,10 @@ public class DepartmentDto extends UUIDBaseModel {
 	public void setUsers(List<SystemUserVo> users) {
 		this.users = users;
 	}
-	public List<DepartmentRoleDto> getRoles() {
+	public Set<DepartmentRolePermissionsVo> getRoles() {
 		return roles;
 	}
-	public void setRoles(List<DepartmentRoleDto> roles) {
+	public void setRoles(Set<DepartmentRolePermissionsVo> roles) {
 		this.roles = roles;
 	}
 }

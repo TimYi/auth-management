@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shz.foundation.persistence.springdata.PagedList;
+import com.shz.foundation.rest.RequestResult;
 import com.shz.foundation.view.controller.PagingController;
 import com.shz.project.admin.facade.system.permission.PermissionInputArgs;
 import com.shz.project.admin.facade.system.permission.PermissionService;
@@ -51,6 +53,17 @@ public class PermissionController extends PagingController<PermissionVo, Permiss
 		PagedList<FieldPermissionVo> pagedList=fieldService.findPage(page, size);
 		view.addObject("page", pagedList);
 		return view;
+	}
+	
+	@RequestMapping(value="rest/page/{page}")
+	public @ResponseBody String permissionPage(@PathVariable Integer page,@RequestParam(defaultValue="8") Integer size,
+			HttpServletRequest request) {
+		try {
+			PagedList<FieldPermissionVo> pagedList=fieldService.findPage(page, size);
+			return RequestResult.success(pagedList).toJson();
+		} catch (Exception e) {
+			return internalError(e);
+		}
 	}
 	
 	@RequestMapping(value="add",method=RequestMethod.GET)

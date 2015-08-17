@@ -26,8 +26,6 @@ public class Menu extends UUIDBaseModel {
 	private Set<Menu> subMenus;
 	private Menu parent;
 	private int ordernum;
-	/**权限代码，为空代表不做任何访问限制*/
-	private String permission;
 	
 	@Column(unique=true)
 	public String getCode() {
@@ -75,12 +73,6 @@ public class Menu extends UUIDBaseModel {
 	}
 	public void setOrdernum(int ordernum) {
 		this.ordernum = ordernum;
-	}
-	public String getPermission() {
-		return permission;
-	}
-	public void setPermission(String permission) {
-		this.permission = permission;
 	}
 
 	public static enum MenuType {

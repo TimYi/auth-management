@@ -1,34 +1,6 @@
-(function() {
-	var local = window.location;  
-	var contextPath = local.pathname.split("/")[1];  
-	basePath = local.protocol+"//"+local.host+"/"+contextPath;
-}());
-
 document.write("<style>" +
 		"#title {display:none}"+
 		"</style>");
-
-/**
- * 为String类型添加format方法
- */
-if (!String.format) {
-  String.format = function(format) {
-    var args = Array.prototype.slice.call(arguments, 1);
-    return format.replace(/{(\d+)}/g, function(match, number) { 
-      return typeof args[number] != 'undefined'
-        ? args[number] 
-        : match
-      ;
-    });
-  };
-}
-
-if(!String.replaceAll) {
-	String.prototype.replaceAll = function(s1,s2){
-		return this.replace(new RegExp(s1,"gm"),s2);
-	}
-}
-
 
 //tab数据格式：name,url,key
 
@@ -160,58 +132,3 @@ function DynamicTab() {
 //初始化dynamicTab实例
 dynamicTab=new DynamicTab();
 window.dynamicTab=dynamicTab;
-
-Array.prototype.remove=function(index){ 
-	this.splice(index,1); 
-} 
-
-function TabMap() {
-	this.tabs=new Array();
-	
-	if(!TabMap.prototype._initialized) {
-		TabMap.prototype._initialized=true;
-		
-		/**
-		 * 添加tab，如果之前并没有重复，返回true，否则返回false
-		 */
-		TabMap.prototype.add=function(tab) {
-			var key=tab.key;
-			if(this.contains(key)<0) {
-				this.tabs.push(tab);
-				return true;
-			}
-			return false;
-		}
-		
-		/**
-		 * 删除和key对应的tab
-		 */
-		TabMap.prototype.remove=function(key) {
-			var i=this.contains(key);
-			if(i>=0) {
-				this.tabs.remove(i);
-			}
-		}
-		
-		TabMap.prototype.get=function(key) {
-			var i=this.contains(key);
-			if(i>=0) {
-				return this.tabs[i];
-			}
-			return null;
-		}
-		
-		/**
-		 * 检查key是否已存在，如果存在，返回其所在index，否则返回-1
-		 */
-		TabMap.prototype.contains=function(key) {
-			for(var i=0;i<this.tabs.length;i++) {
-				var currentTab=this.tabs[i];
-				if(currentTab.key==key) {
-					return i;
-				}
-			}
-			return -1;
-		}
-	}
-}

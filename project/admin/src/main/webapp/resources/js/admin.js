@@ -4,7 +4,6 @@ loadHomePage();
 dynamicTab.init("#body",subPageChecks);
 
 function subPageChecks() {
-	
 	$('form.ajax').on('submit', function(e) {
 		var url=$(this).attr("action");
 		url=basePath+url;
@@ -76,6 +75,10 @@ function ajax(params) {
 			}
 		}
 	}
+	var url=params.url;
+	url=basePath+url;
+	params.url=url;
+	params.dataType="json";
 	$.ajax(params);
 }
 
@@ -87,14 +90,13 @@ function loadHomePage() {
 		dataType:"json",
 		success:function(data) {
 			var treeNode=new Array();
-			treeNode[0]={text:"菜单管理",url:"/menu",type:"URL"};
 			var menuArray=data.result;
 			for(var i=0;i<menuArray.length;i++) {
 				var menu=menuArray[i];
 				var node=createNodeFromMenu(menu);
-				treeNode[i+1]=node;
+				treeNode[i]=node;
 			}
-			treeview(treeNode);
+			treeview(treeNode);			
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown) {
 			alert(errorThrown);
@@ -104,7 +106,7 @@ function loadHomePage() {
 
 function createNodeFromMenu(menu) {
 	if(menu.type=="URL") {
-		return {text:menu.name,url:menu.url,type:menu.type};
+		return {text:menu.name,url:menu.url,type:menu.type,id:menu.id};
 	} else {
 		var nodes=createNodesFromMenus(menu.subMenus);
 		return {text:menu.name,type:menu.type,nodes:nodes}
@@ -151,7 +153,7 @@ function del(url,id) {
 	bootbox.confirm("确定要删除它吗？",
 	function(result){
 	if(!result)return;
-		var deleteUrl=basePath+url+"/"+id;
+		var deleteUrl=url+"/"+id;
 		ajax({
 			url:deleteUrl,
 			method:"DELETE",

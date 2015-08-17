@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shz.project.domain.system.department.Department;
-import com.shz.project.domain.system.department.role.DepartmentRole;
+import com.shz.project.domain.system.department.role.DepartmentRolePermissions;
 import com.shz.project.domain.system.permission.Permission;
 import com.shz.project.domain.system.role.Role;
 import com.shz.project.domain.system.user.SystemUser;
@@ -43,22 +43,19 @@ public class PermissionManager {
 		}
 		
 		//提取部门角色特殊权限
-		Set<DepartmentRole> departmentRoles=null;
+		Set<DepartmentRolePermissions> departmentRoles=null;
 		Department department=user.getDepartment();
 		if(department!=null) {
 			departmentRoles=department.getRoles();
 		}
 		if(departmentRoles!=null) {
-			Set<DepartmentRole> allocatedRoles=departmentRoles.stream().filter(d->roles.contains(d.getRole()))
-					.collect(Collectors.toSet());
-			if(allocatedRoles!=null) {
-				for (DepartmentRole departmentRole : allocatedRoles) {
-					Set<Permission> departmentPermissions=departmentRole.getPermissions();
-					if(departmentPermissions!=null) {
-						permissions.addAll(departmentPermissions.stream().map(Permission::getPermission).collect(Collectors.toSet()));
+			for (DepartmentRolePermissions drole : departmentRoles) {
+				if(roles.contains(drole.getRole())) {
+					if(!departmentRoles.isEmpty()) {
+						permissions.addAll(drole.stream().map(Permission::getPermission).collect(Collectors.toSet()));
 					}
 				}
-			}			
+			}
 		}
 		return permissions;
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.shz.foundation.mapping.service.DtoPagingService;
@@ -33,6 +34,8 @@ public class MenuService extends DtoPagingService<Menu, MenuVo, MenuInputArgs, S
 		return adapter.convertDoList(menus);
 	}
 	
+	//对菜单进行过滤时，必须处于非事务状态，否则过滤的结果会自动进行提交
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	public List<MenuVo> accessedTopMenus() {
 		List<Menu> menus=menuManager.accessedTopMenus();
 		return adapter.convertDoList(menus);

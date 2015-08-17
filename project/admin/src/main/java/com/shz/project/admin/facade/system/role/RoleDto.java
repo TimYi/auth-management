@@ -6,11 +6,14 @@ import java.util.Set;
 import com.shz.foundation.persistence.UUIDBaseModel;
 import com.shz.project.admin.facade.system.permission.PermissionVo;
 import com.shz.project.admin.facade.system.user.SystemUserVo;
+import com.shz.project.domain.system.role.Role.RoleType;
 
 public class RoleDto extends UUIDBaseModel {
 
 	/**角色名称*/
 	private String name;
+	/**角色类型*/
+	private RoleType type;
 	/**角色描述*/
 	private String description;
 	/**用户角色*/
@@ -23,6 +26,12 @@ public class RoleDto extends UUIDBaseModel {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public RoleType getType() {
+		return type;
+	}
+	public void setType(RoleType type) {
+		this.type = type;
 	}
 	public String getDescription() {
 		return description;

@@ -28,6 +28,7 @@ public class RoleAdapter extends SimpleDtoAdapter<Role, RoleDto, RoleInputArgs> 
 	@Override
 	public Role update(RoleInputArgs i, Role d) {
 		d.setName(i.getName());
+		d.setType(i.getType());
 		d.setDescription(i.getDescription());
 		List<String> permissionIds=i.getPermissionIds();
 		if(permissionIds!=null) {
@@ -37,6 +38,8 @@ public class RoleAdapter extends SimpleDtoAdapter<Role, RoleDto, RoleInputArgs> 
 				permissions.add(permission);
 			}
 			d.setPermissions(permissions);
+		} else {
+			d.setPermissions(null);
 		}
 		return d;
 	}

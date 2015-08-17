@@ -2,6 +2,7 @@ package com.shz.project.domain.system.permission;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -13,7 +14,7 @@ public class FieldPermission extends Permission {
 	
 	private Set<OperatePermission> operations;
 
-	@OneToMany(mappedBy="field")
+	@OneToMany(mappedBy="field",cascade=CascadeType.ALL)
 	public Set<OperatePermission> getOperations() {
 		return operations;
 	}

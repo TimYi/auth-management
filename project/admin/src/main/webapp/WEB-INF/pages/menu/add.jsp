@@ -31,15 +31,15 @@
        </div>
    </div>
    <div class="form-group">
-       <label for="url" class="col-sm-2 control-label">地址:</label>
+       <label for="ordernum" class="col-sm-2 control-label">序号:</label>
        <div class="col-sm-10">
-           <input type="text" class="form-control" name="url">
+           <input type="number" class="form-control" name="ordernum">
        </div>
    </div>
    <div class="form-group">
-       <label for="permission" class="col-sm-2 control-label">权限代码:</label>
+       <label for="url" class="col-sm-2 control-label">地址:</label>
        <div class="col-sm-10">
-           <input type="text" class="form-control" name="permission">
+           <input type="text" class="form-control" name="url">
        </div>
    </div>
    <div class="col-sm-offset-2 col-sm-10">

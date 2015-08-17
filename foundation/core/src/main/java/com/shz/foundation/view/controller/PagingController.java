@@ -22,6 +22,12 @@ public abstract class PagingController<T,I> {
 	/**jsp页面基础路径，结尾不带/*/
 	protected abstract String getBasePath();
 	
+	@RequestMapping(value="",method=RequestMethod.GET)
+	public ModelAndView index() {
+		String path="redirect:"+getBasePath()+"/page/1";
+		return new ModelAndView(path);
+	}
+	
 	@RequestMapping(value="page/{page}",method=RequestMethod.GET)
 	public ModelAndView listPage(@PathVariable Integer page,@RequestParam(defaultValue="8") Integer size,
 			HttpServletRequest request) {
@@ -42,7 +48,7 @@ public abstract class PagingController<T,I> {
 	}
 	
 	@RequestMapping(value="{id}/edit",method=RequestMethod.GET)
-	public ModelAndView eidtPage(@PathVariable String id) {
+	public ModelAndView editPage(@PathVariable String id) {
 		String path=getBasePath()+"/edit";
 		ModelAndView view=new ModelAndView(path);
 		T t=getService().findOne(id);

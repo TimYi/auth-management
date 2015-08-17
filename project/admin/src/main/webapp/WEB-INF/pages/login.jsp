@@ -10,7 +10,7 @@
     <link href="<c:url value='/resources/css/bootstrap.min.css'/>" type="text/css" rel="stylesheet"/>
 </head>
 <body>	
-	<div class="container">
+	<div class="container" style="margin-top:15em;">
        <form role="form" class="form-horizontal" method="post">
           <div class="form-group">
               <label for="username" class="col-sm-2 control-label">用户名:</label>

@@ -1,6 +1,7 @@
 package com.shz.foundation.security.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.function.Consumer;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
@@ -12,25 +13,32 @@ import org.apache.shiro.subject.Subject;
  */
 public class AuthDecesider {
 
-	/**用于表示只有用户才能访问*/
-	private static final String SHOULD_LOGIN="isAuthenticated";
+	private static final String IS_USER="isUser";
+	private static final String ANON="anon";
+	
+	public static void permissionDeside(String permission, Consumer<String> isUser, Consumer<String> anon, Consumer<String> perms) {
+		if(permission.equals(IS_USER)) {
+			isUser.accept(permission);
+		} else if(permission.equals(ANON)) {
+			anon.accept(permission);
+		} else {
+			perms.accept(permission);
+		}
+	}
 	
 	/**
 	 * 用户是否具有访问权限
-	 * @param code 权限代码
+	 * @param permission 权限代码
 	 * @return
 	 */
-	public static boolean couldAccess(String code) {
-		if(StringUtils.isBlank(code)) {
-			return true;
-		}
-		
-		//匹配特殊权限代码
+	public static boolean couldAccess(String permission) {
 		Subject subject=SecurityUtils.getSubject();
-		if(code.equals(SHOULD_LOGIN)) {
-			return subject.isAuthenticated();
-		}
-		
-		return subject.isPermitted(code);
+		try {
+			permissionDeside(permission, p->subject.isAuthenticated(), p->{},
+					p->subject.checkPermission(p));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}		
 	}
 }

@@ -1,18 +1,18 @@
 package com.shz.project.admin.facade.system.department;
 
 import java.util.List;
+import java.util.Map;
 
 import com.shz.foundation.mapping.model.DtoBaseModel;
-import com.shz.project.admin.facade.system.department.role.DepartmentRoleInputArgs;
 
 public class DepartmentInputArgs extends DtoBaseModel {
 
 	/**部门名称*/
 	private String name;
 	/**部门描述*/
-	private String desrciption;
+	private String description;
 	/**部门角色*/
-	private List<DepartmentRoleInputArgs> departmentRoles;
+	private Map<String, List<String>> rolePermissions;
 	
 	public String getName() {
 		return name;
@@ -20,16 +20,16 @@ public class DepartmentInputArgs extends DtoBaseModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDesrciption() {
-		return desrciption;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesrciption(String desrciption) {
-		this.desrciption = desrciption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	public List<DepartmentRoleInputArgs> getDepartmentRoles() {
-		return departmentRoles;
+	public Map<String, List<String>> getRolePermissions() {
+		return rolePermissions;
 	}
-	public void setDepartmentRoles(List<DepartmentRoleInputArgs> departmentRoles) {
-		this.departmentRoles = departmentRoles;
+	public void setRolePermissions(Map<String, List<String>> rolePermissions) {
+		this.rolePermissions = rolePermissions;
 	}
 }

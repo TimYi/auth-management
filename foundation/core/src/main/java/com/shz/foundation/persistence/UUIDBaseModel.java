@@ -33,6 +33,8 @@ public abstract class UUIDBaseModel extends BaseModel implements Identified<Stri
 	 */
 	@Override
 	public boolean equals(Object obj) {
+		if(obj==null) return false;
+		if(id==null) return super.equals(obj);
 		if(!(obj instanceof UUIDBaseModel))return false;
 		return ((UUIDBaseModel)obj).getId().equals(id);
 	}
@@ -42,6 +44,7 @@ public abstract class UUIDBaseModel extends BaseModel implements Identified<Stri
 	 */
 	@Override
 	public int hashCode() {
+		if(id==null) return super.hashCode();
 		return id.hashCode();
 	};
 }

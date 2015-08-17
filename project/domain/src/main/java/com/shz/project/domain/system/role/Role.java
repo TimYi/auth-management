@@ -20,6 +20,8 @@ public class Role extends UUIDBaseModel {
 
 	/**角色名称*/
 	private String name;
+	/**角色类型*/
+	private RoleType type;
 	/**角色描述*/
 	private String description;
 	/**用户角色*/
@@ -33,6 +35,13 @@ public class Role extends UUIDBaseModel {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	@Column(nullable=false)
+	public RoleType getType() {
+		return type;
+	}
+	public void setType(RoleType type) {
+		this.type = type;
 	}
 	public String getDescription() {
 		return description;
@@ -53,5 +62,15 @@ public class Role extends UUIDBaseModel {
 	}
 	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
+	}
+	
+	/**
+	 * 角色类型，用于区分是通用角色，还是部门角色。
+	 * 部门角色可以分配通用权限
+	 * @author pc
+	 *
+	 */
+	public static enum RoleType {
+		GENERIC,DEPARTMENT;
 	}
 }

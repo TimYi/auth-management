@@ -38,6 +38,14 @@ public class SystemUserService extends DtoPagingService<SystemUser, SystemUserDt
 		return adapter.convertToDetailedDto(user);
 	}
 	
+	@Override
+	public SystemUserDto update(SystemUserInputArgs entity) {
+		SystemUser u=adapter.convertToDo(entity);
+		u=manager.update(u.getId(), u.getUsername(), u.getRealname(), u.isVerified(), u.getEmail(), u.getTelephone(), 
+				u.getDepartment(), u.getRoles());
+		return adapter.convertToDetailedDto(u);
+	}
+	
 	public void regist(String username, String password, String departmentId) {
 		Department department=new Department();
 		manager.regist(username, password, department);

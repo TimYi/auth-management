@@ -9,7 +9,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Where;
 
 import com.shz.foundation.persistence.UUIDBaseModel;
-import com.shz.project.domain.system.department.role.DepartmentRole;
+import com.shz.project.domain.system.department.role.DepartmentRolePermissions;
 import com.shz.project.domain.system.user.SystemUser;
 
 @Entity
@@ -18,11 +18,11 @@ public class Department extends UUIDBaseModel {
 	/**部门名称*/
 	private String name;
 	/**部门描述*/
-	private String desrciption;
+	private String description;
 	/**部门用户*/
 	private Set<SystemUser> users;
 	/**部门角色*/
-	private Set<DepartmentRole> roles;
+	private Set<DepartmentRolePermissions> roles;
 
 	public String getName() {
 		return name;
@@ -30,11 +30,11 @@ public class Department extends UUIDBaseModel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDesrciption() {
-		return desrciption;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesrciption(String desrciption) {
-		this.desrciption = desrciption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	@OneToMany(mappedBy="department")
 	@Where(clause="verified=1")
@@ -44,11 +44,11 @@ public class Department extends UUIDBaseModel {
 	public void setUsers(Set<SystemUser> users) {
 		this.users = users;
 	}
-	@OneToMany(cascade=CascadeType.ALL)
-	public Set<DepartmentRole> getRoles() {
+	@OneToMany(mappedBy="department",cascade=CascadeType.ALL)
+	public Set<DepartmentRolePermissions> getRoles() {
 		return roles;
 	}
-	public void setRoles(Set<DepartmentRole> roles) {
+	public void setRoles(Set<DepartmentRolePermissions> roles) {
 		this.roles = roles;
 	}
 }
