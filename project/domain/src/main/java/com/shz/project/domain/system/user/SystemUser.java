@@ -30,6 +30,8 @@ public class SystemUser extends UUIDBaseModel {
 	private Set<Role> roles;
 	/**用户所属部门*/
 	private Department department;
+	/**用于存放邮箱验证凭据*/
+	private String emailValidater;
 	
 	@Column(nullable=false, unique=true)
 	public String getUsername() {
@@ -89,5 +91,11 @@ public class SystemUser extends UUIDBaseModel {
 	}
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	public String getEmailValidater() {
+		return emailValidater;
+	}
+	public void setEmailValidater(String emailValidater) {
+		this.emailValidater = emailValidater;
 	}
 }

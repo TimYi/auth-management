@@ -107,6 +107,10 @@ public abstract class RequestResult {
 		}
 	}
 	
+	public static String illegalArgument(String message) {
+		return RequestResult.error(403, "非法参数", message).toJson();
+	}
+	
 	public static String internalError(Exception e) {
 		LogUtils.debug(e.toString());
 		return RequestResult.error(500, "服务器内部错误", e.getMessage()).toJson();

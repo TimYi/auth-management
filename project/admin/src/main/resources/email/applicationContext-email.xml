@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd"
+	default-lazy-init="true">
+
+	<description>Email配置</description>
+
+	<!-- 文本邮件服务类 -->
+	<bean id="validateEmailSender" class="com.shz.project.domain.system.user.ValidateEmailSender">
+		<property name="mailSender" ref="mailSender" />
+		<property name="template" value="${server.address}/${app.name}/changePassword/byEmail?validater={0}"/>
+	</bean>
+	
+	<!-- 邮件发送器 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.exmail.qq.com" />
+		<property name="username" value="tianming.yi@doublev2v.com" />
+		<property name="password" value="ytm_900903" />
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<!-- 使用gmail smtp server的必须参数 -->
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

@@ -16,6 +16,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import com.shz.foundation.security.shiro.ShiroUser;
+import com.shz.foundation.utils.validate.EmailValidater;
+import com.shz.foundation.utils.validate.PhoneNumberValidater;
 import com.shz.project.domain.system.EncryptService;
 import com.shz.project.domain.system.PermissionManager;
 import com.shz.project.domain.system.user.SystemUser;
@@ -48,7 +50,14 @@ public class SystemUserRealm extends AuthorizingRealm {
 			AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken userToken = (UsernamePasswordToken) token;
 		String username=userToken.getUsername();
-		SystemUser user=userRepository.getByUsername(username);
+		SystemUser user;
+		if(EmailValidater.isEmail(username)) {
+			user=userRepository.getByEmail(username);
+		} else if(PhoneNumberValidater.isMobile(username)) {
+			user=userRepository.getByTelephone(username);
+		} else {
+			user=userRepository.getByUsername(username);
+		}		
 		if(user==null || !user.isVerified()) {
 			throw new AuthenticationException("用户不存在或未通过认证");
 		}

@@ -17,6 +17,7 @@ import com.shz.foundation.utils.LogUtils;
 import com.shz.project.admin.facade.system.department.DepartmentDto;
 import com.shz.project.admin.facade.system.department.DepartmentService;
 import com.shz.project.admin.facade.system.user.SystemUserService;
+import com.shz.project.domain.system.user.SystemUserManager;
 
 @Controller
 public class HomeController {
@@ -25,6 +26,8 @@ public class HomeController {
 	private SystemUserService userService;
 	@Autowired
 	private DepartmentService departmentService;
+	@Autowired
+	private SystemUserManager userManager;
 	
 	@RequestMapping(value="",method=RequestMethod.GET)
 	public String index() {
@@ -78,6 +81,46 @@ public class HomeController {
 		} catch (Exception e) {
 			return RequestResult.internalError(e);
 		}		
+	}
+	
+	@RequestMapping(value="forgetPassword/sendEmail",method=RequestMethod.GET)
+	public ModelAndView sendValidateEmail() {
+		return new ModelAndView("sendValidateEmail");
+	}
+	
+	@RequestMapping(value="forgetPassword/sendEmail",method=RequestMethod.POST)
+	public @ResponseBody String sendValidateEmail(String email,HttpServletRequest request) {
+		if(!SimpleCaptchaUtils.rightCaptcha(request)) {
+			return RequestResult.illegalArgument("验证码错误！");
+		}
+		try {
+			userManager.emailValidate(email);
+			return RequestResult.success("邮件发送成功").toJson();
+		} catch (Exception e) {
+			return RequestResult.internalError(e);
+		}
+	}
+	
+	@RequestMapping(value="changePassword/byEmail",method=RequestMethod.GET)
+	public ModelAndView emailValidate(String validater) {
+		userManager.checkEmailValidater(validater);
+		ModelAndView view=new ModelAndView("emailValidate");
+		view.addObject("validater", validater);
+		return view;
+	}
+	
+	@RequestMapping(value="changePassword/byEmail",method=RequestMethod.POST)
+	public @ResponseBody String emailValidate(String validater, String newPassword, String confirmPassword) {
+		System.out.println(validater);
+		if(!newPassword.equals(confirmPassword)) {
+			return RequestResult.illegalArgument("两次输入密码不一致");
+		}
+		try {			
+			userManager.changePasswordByEmail(validater, newPassword);
+			return RequestResult.success("修改成功").toJson();
+		} catch (Exception e) {
+			return RequestResult.internalError(e);
+		}
 	}
 	
 	

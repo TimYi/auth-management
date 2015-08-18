@@ -31,6 +31,7 @@
 		</div>
       </form>
       <div class="col-sm-offset-2">还没有注册？去<a href="<c:url value='/regist'/>">注册</a></div>
+      <div class="col-sm-offset-2">忘记密码？试试<a href="<c:url value='/forgetPassword/sendEmail'/>">邮件找回</a></div>
     </div>
     <script src="<c:url value='/resources/js/jquery-1.11.3.min.js'/>"></script>
     <script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>

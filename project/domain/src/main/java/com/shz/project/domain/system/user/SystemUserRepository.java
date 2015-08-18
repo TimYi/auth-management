@@ -12,5 +12,7 @@ public interface SystemUserRepository extends PagingAndSortingRepository<SystemU
 	
 	SystemUser getByTelephone(String telephone);
 	
+	SystemUser getByEmailValidater(String emailValidater);
+	
 	Page<SystemUser> findByVerified(boolean verified,Pageable pageable);
 }

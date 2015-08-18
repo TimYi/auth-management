@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shz.foundation.utils.Identities;
 import com.shz.foundation.utils.validate.EmailValidater;
 import com.shz.foundation.utils.validate.PhoneNumberValidater;
 import com.shz.foundation.utils.validate.UsernameValidater;
@@ -20,6 +21,8 @@ public class SystemUserManager {
 	
 	@Autowired
 	private SystemUserRepository repository;
+	@Autowired
+	private ValidateEmailSender emailSender;
 
 	/**
 	 * 新增用户时，检查用户名是否重复，为密码进行加密
@@ -88,6 +91,7 @@ public class SystemUserManager {
 		return add(user);
 	}
 	
+	/**修改密码，需要用户记得原密码*/
 	public SystemUser changePassword(SystemUser user, String oldPassword, String newPassword) {
 		checkPassword(newPassword);
 		
@@ -102,6 +106,35 @@ public class SystemUserManager {
 		String password=EncryptService.encryptPassword(newPassword, salt);
 		user.setPassword(password);
 		return user;
+	}
+	
+	public SystemUser checkEmailValidater(String emailValidater) throws RuntimeException {
+		SystemUser user=repository.getByEmailValidater(emailValidater);
+		if(user==null) {
+			throw new RuntimeException("邮件凭据不存在");
+		}
+		return user;
+	}
+	
+	/**通过发送到邮箱的验证凭据，重置密码*/
+	public SystemUser changePasswordByEmail(String emailValidater, String password) {
+		SystemUser user=checkEmailValidater(emailValidater);
+		checkPassword(password);
+		String salt=EncryptService.generateSalt();
+		user.setSalt(salt);
+		password=EncryptService.encryptPassword(password, salt);
+		user.setPassword(password);
+		user.setEmailValidater(null);
+		return user;
+	}
+	
+	/**向指定邮箱发送验证邮件*/
+	public void emailValidate(String email) {
+		SystemUser user=repository.getByEmail(email);
+		if(user==null) throw new RuntimeException("邮箱名不存在");
+		String emailValidater=Identities.uuid2();
+		user.setEmailValidater(emailValidater);
+		emailSender.sendMail(email, emailValidater);
 	}
 	
 	/**检查用户名，需要满足2~10位数字+字母这个规则，不能和已有用户名重复，不能有特殊符号*/
