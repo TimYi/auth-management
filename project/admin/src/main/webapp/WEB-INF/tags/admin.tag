@@ -26,6 +26,10 @@
 		.table>thead>tr>th.pdl-2 {padding-left:2em;	}
 		.table>thead>tr>th.pdl-3 {padding-left:3em;	}
 		.table>thead>tr>th.pdl-4 {padding-left:4em;	}
+		
+		.captcha {
+			cursor:pointer;
+		}
     </style>
     <jsp:invoke fragment="style"></jsp:invoke>
 </head>

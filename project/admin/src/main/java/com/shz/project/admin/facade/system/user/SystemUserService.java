@@ -55,6 +55,11 @@ public class SystemUserService extends DtoPagingService<SystemUser, SystemUserDt
 		manager.regist(username, password, realname, email, telephone, department);
 	}
 	
+	public void changePassword(String username, String oldPassword, String newPassword) {
+		SystemUser user=userRepository.getByUsername(username);
+		manager.changePassword(user, oldPassword, newPassword);
+	}
+	
 	public PagedList<SystemUserDto> unauthenticatedUsers(int page, int size) {
 		Pageable pageable=PageableBuilder.build(page, size);
 		Page<SystemUser> users=userRepository.findByVerified(false, pageable);

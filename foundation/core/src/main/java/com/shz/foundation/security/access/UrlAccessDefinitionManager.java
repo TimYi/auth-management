@@ -17,9 +17,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.shz.foundation.security.utils.AuthDecesider;
+import com.shz.foundation.security.shiro.AuthDecesider;
 
-@Service
+@Service(value="accessDefinitionManager")
 @Transactional
 public class UrlAccessDefinitionManager {
 	

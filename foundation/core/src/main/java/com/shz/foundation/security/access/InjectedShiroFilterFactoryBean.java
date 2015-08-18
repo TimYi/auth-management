@@ -13,16 +13,15 @@ import org.apache.shiro.web.filter.authc.AuthenticationFilter;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.FilterChainManager;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class InjectedShiroFilterFactoryBean extends ShiroFilterFactoryBean {
 	
-	@Autowired
 	private UrlAccessDefinitionManager accessDefinitionManager;
 	private FilterChainManager filterChainManager;
 
-	public FilterChainManager getFilterChainManager() {
-		return filterChainManager;
+	public void setAccessDefinitionManager(
+			UrlAccessDefinitionManager accessDefinitionManager) {
+		this.accessDefinitionManager = accessDefinitionManager;
 	}
 	public void setFilterChainManager(FilterChainManager filterChainManager) {
 		this.filterChainManager = filterChainManager;
@@ -30,7 +29,7 @@ public class InjectedShiroFilterFactoryBean extends ShiroFilterFactoryBean {
 	
 	@Override
 	protected FilterChainManager createFilterChainManager() {
-		FilterChainManager manager = getFilterChainManager();
+		FilterChainManager manager = filterChainManager;
 		if(manager==null) manager = new DefaultFilterChainManager();
         Map<String, Filter> defaultFilters = manager.getFilters();
         //apply global settings if necessary:

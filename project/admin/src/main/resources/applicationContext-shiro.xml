@@ -13,6 +13,8 @@
 
 	<!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
 	<bean id="shiroDbRealm" class="com.shz.project.admin.authenticate.SystemUserRealm">
+		<property name="userRepository" ref="systemUserRepository" />
+		<property name="permissionManager" ref="permissionManager" />
 	</bean>
 	
 	<!-- 項目自定义的Realm, 所有accountService依赖的dao都需要用depends-on声明 -->
@@ -21,6 +23,7 @@
 	
 	<!-- Shiro Filter -->
 	<bean id="shiroFilter" class="com.shz.foundation.security.access.InjectedShiroFilterFactoryBean">
+		<property name="accessDefinitionManager" ref="accessDefinitionManager" />
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
 		<property name="successUrl" value="/" />

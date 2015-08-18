@@ -14,8 +14,8 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import com.shz.foundation.security.shiro.ShiroUser;
 import com.shz.project.domain.system.EncryptService;
 import com.shz.project.domain.system.PermissionManager;
 import com.shz.project.domain.system.user.SystemUser;
@@ -23,10 +23,14 @@ import com.shz.project.domain.system.user.SystemUserRepository;
 
 public class SystemUserRealm extends AuthorizingRealm {
 	
-	@Autowired
 	private SystemUserRepository userRepository;
-	@Autowired
 	private PermissionManager permissionManager;
+	public void setUserRepository(SystemUserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+	public void setPermissionManager(PermissionManager permissionManager) {
+		this.permissionManager = permissionManager;
+	}
 
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(
@@ -59,37 +63,5 @@ public class SystemUserRealm extends AuthorizingRealm {
 	@PostConstruct
 	public void initCredentialsMatcher() {
 		setCredentialsMatcher(EncryptService.CREDENTIALS_MATCHER);
-	}
-	
-	public static class ShiroUser {
-		private String id;
-		private String username;
-		private String realname;
-		
-		public ShiroUser(){}
-		public ShiroUser(String id, String username, String realname) {
-			this.id=id;
-			this.username=username;
-			this.realname=realname;
-		}
-
-		public String getId() {
-			return id;
-		}
-		public void setId(String id) {
-			this.id = id;
-		}
-		public String getUsername() {
-			return username;
-		}
-		public void setUsername(String username) {
-			this.username = username;
-		}
-		public String getRealname() {
-			return realname;
-		}
-		public void setRealname(String realname) {
-			this.realname = realname;
-		}
 	}
 }

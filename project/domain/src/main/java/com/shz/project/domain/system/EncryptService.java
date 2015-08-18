@@ -29,4 +29,9 @@ public class EncryptService {
 		String sha1=new Sha1Hash(plainPassword, salt, HASH_INTERATIONS).toHex();
 		return sha1;
 	}
+	
+	public static boolean rightPassword(String plainPassword, String salt, String password) {
+		String calculatedPassword=encryptPassword(plainPassword, salt);
+		return (calculatedPassword.equals(password));
+	}
 }

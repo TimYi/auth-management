@@ -1,4 +1,4 @@
-package com.shz.foundation.security.utils;
+package com.shz.foundation.security.shiro;
 
 import java.util.function.Consumer;
 

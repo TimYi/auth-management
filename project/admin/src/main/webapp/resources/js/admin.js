@@ -38,7 +38,12 @@ function subPageChecks() {
 			jumpTo(oldkey,url);
 		}		
 		e.preventDefault();
-	})
+	});
+	
+	$("img.captcha").on('click', function(e) {
+		var src=$(this).attr("src");
+		$(this).attr("src",src);
+	});
 }
 
 function createTab(url) {

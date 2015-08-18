@@ -88,11 +88,18 @@ public class SystemUserManager {
 		return add(user);
 	}
 	
-	public SystemUser changePassword(SystemUser user, String password) {
-		checkPassword(password);
-		String salt=EncryptService.generateSalt();
+	public SystemUser changePassword(SystemUser user, String oldPassword, String newPassword) {
+		checkPassword(newPassword);
+		
+		String salt=user.getSalt();
+		String originPassword=user.getPassword();
+		if(!EncryptService.rightPassword(oldPassword, salt, originPassword)) {
+			throw new RuntimeException("您输入的原密码不正确");
+		}
+		
+		salt=EncryptService.generateSalt();
 		user.setSalt(salt);
-		password=EncryptService.encryptPassword(password, salt);
+		String password=EncryptService.encryptPassword(newPassword, salt);
 		user.setPassword(password);
 		return user;
 	}
