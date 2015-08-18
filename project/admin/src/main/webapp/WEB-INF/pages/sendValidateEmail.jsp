@@ -41,6 +41,7 @@
 <script src="<c:url value='/resources/js/jquery-1.11.3.min.js'/>"></script>
 <script src="<c:url value='/resources/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/resources/js/jquery.form.js'/>"></script>
+<script src="<c:url value='/resources/js/base.js'/>"></script>
 <script>
 	$('form').on('submit', function(e) {	
 	    $(this).ajaxSubmit({
@@ -48,7 +49,7 @@
 	        success: function(data) { 
 	        	if(data.status=="OK") {	
 	        		alert(data.result);
-	        		window.open("about:blank","_self").close();  
+	        		window.location.href=basePath;  
 				} else {
 					alert("错误原因："+data.errorDescription);
 					$("img.captcha").trigger("click");
