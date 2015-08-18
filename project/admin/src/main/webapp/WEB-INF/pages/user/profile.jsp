@@ -4,7 +4,7 @@
 <%@ taglib  prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div id="title">个人中心</div>
 <div class="col-sm-offset-2">
-	<a class="btn btn-primary ajax" href="/user/changePassword">修改密码</a>
+	<a class="btn btn-primary" href="<c:url value='/changePassword'/>" target="_blank">修改密码</a>
 </div>
 <form class="form-horizontal" style="margin-top:2em;">
    <div class="form-group">
