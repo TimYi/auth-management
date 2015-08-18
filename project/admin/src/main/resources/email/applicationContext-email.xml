@@ -13,9 +13,9 @@
 	
 	<!-- 邮件发送器 -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.exmail.qq.com" />
-		<property name="username" value="tianming.yi@doublev2v.com" />
-		<property name="password" value="ytm_900903" />
+		<property name="host" value="${email.host}" />
+		<property name="username" value="${email.user}" />
+		<property name="password" value="${email.password}" />
 		<property name="defaultEncoding" value="UTF-8"/>
 		<property name="javaMailProperties">
 			<props>
